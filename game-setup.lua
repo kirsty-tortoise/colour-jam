@@ -5,7 +5,7 @@ local defaultkeys = {{keys={up="up", down="down", left="left", right="right", fl
 local defaultjoys = {}
 local addplayer = love.graphics.newImage("art/addplayer.png")
 local gobutton = love.graphics.newImage("art/go.png")
-local mustSpecifyJoyButton = false
+local mustSpecifyJoyButton = {}
 
 function gameSetup.setup()
   defaultjoys = love.joystick.getJoysticks()
@@ -14,10 +14,12 @@ function gameSetup.setup()
   end
   players = {}
   if #defaultjoys > 0 then
-    table.insert(players, {joystick = defaultjoys[1].joystick, flipMode = "row", team = 0})
+    table.insert(players, {joystick = defaultjoys[1].joystick, flipMode = "row", team = 0, buttonid = 0})
+    table.insert(mustSpecifyJoyButton,{players[#players].joystick:getID(), #players})
     defaultjoys[1].used = true
     if #defaultjoys > 1 then
-      table.insert(players, {joystick = defaultjoys[2].joystick, flipMode = "row", team = 0})
+      table.insert(players, {joystick = defaultjoys[2].joystick, flipMode = "row", team = 0, buttonid = 0})
+      table.insert(mustSpecifyJoyButton,{players[#players].joystick:getID(), #players})
       defaultjoys[2].used = true
     else
       table.insert(players, {keys = defaultkeys[1].keys, flipMode = "row", team = 0})
@@ -60,7 +62,8 @@ function gameSetup.draw()
       love.graphics.rectangle("line", x + 15, y + 120, 120, 25)
       love.graphics.printf(j.keys.flip, x + 15, y + 125, 125, "center")
     elseif j.joystick then
-      love.graphics.printf("Using controller: "..j.joystick:getName().." with ID "..j.joystick:getID()..".", x + 15, y + 50, 120, "center")
+      love.graphics.setFont(smallFont)
+      love.graphics.printf("Using controller: "..j.joystick:getName(), x + 15, y + 50, 120, "center")
     else
       love.graphics.printf("Is AI", x + 15, y + 75, 120, "center")
     end
@@ -76,12 +79,12 @@ function gameSetup.draw()
   if #players > 1 then
     love.graphics.draw(gobutton, 720, 540, 0, 0.3)
   end
-  if mustSpecifyJoyButton then
-    love.graphics.setColor(0,0,0,50)
+  if #mustSpecifyJoyButton > 0 then
+    love.graphics.setColor(0,0,0,200)
     love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
     love.graphics.setColor(255,255,255)
     love.graphics.setFont(largeFont)
-    love.graphics.printf("Please press a button to use as flip.",0,0,800)
+    love.graphics.printf("Please press a button to use as flip.",0,100,800,"center")
   end
   return gameSetup
 end
@@ -100,7 +103,7 @@ function rectanglePosition(playernumber)
 end
 
 function gameSetup.mousepressed(mx, my, b, istouch)
-  if b == 1 then
+  if b == 1 and #mustSpecifyJoyButton == 0 then
     local x, y = rectanglePosition(#players + 1)
     local h, w = addplayer:getHeight() * 0.4, addplayer:getWidth() * 0.4
     if mx > x - 2 and mx < x - 2 + w and my > y + 10 and my < y + 10 + h then
@@ -115,7 +118,7 @@ function gameSetup.mousepressed(mx, my, b, istouch)
       if joystickfree > 0 then
         table.insert(players, {flipMode = "row", joystick = defaultjoys[joystickfree].joystick, buttonid = 0, team = 0})
         defaultjoys[joystickfree].used = true
-        mustSpecifyJoyButton = true
+        table.insert(mustSpecifyJoyButton, {players[#players].joystick:getID(), #players})
       else
         local keyboardfree = 0
         for i in pairs(defaultkeys) do
@@ -141,6 +144,7 @@ end
 
 function gameSetup.joystickadded(j)
   table.insert(defaultjoys, {joystick = j, used = false})
+  return gameSetup
 end
 
 function gameSetup.joystickremoved(j)
@@ -153,4 +157,22 @@ function gameSetup.joystickremoved(j)
     end
   end
   table.remove(defaultjoys, removedindex)
+  return gameSetup
+end
+
+function gameSetup.joystickpressed(j, b)
+  if #mustSpecifyJoyButton > 0 then
+    local toremove = {}
+    for i in pairs(mustSpecifyJoyButton) do
+      if j:getID() == mustSpecifyJoyButton[i][1] then
+        -- Set that button
+        players[mustSpecifyJoyButton[i][2]].buttonid = b
+        table.insert(toremove, i)
+      end
+    end
+    for i in pairs(toremove) do
+      table.remove(mustSpecifyJoyButton, toremove[i])
+    end
+  end
+  return gameSetup
 end
