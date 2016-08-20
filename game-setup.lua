@@ -68,7 +68,12 @@ function gameSetup.draw()
       love.graphics.printf("Is AI", x + 15, y + 75, 120, "center")
     end
     love.graphics.setFont(mediumFont)
-    love.graphics.printf("Flip Mode: "..j.flipMode, x + 15, y + 160, 120, "center")
+    love.graphics.printf("Flip Mode:\n< "..j.flipMode.." >", x + 15, y + 160, 120, "center")
+    love.graphics.setColor(255,255,255)
+    love.graphics.rectangle("fill", x + 50, y + 225, 100, 20)
+    love.graphics.setColor(0,0,0)
+    love.graphics.setFont(smallFont)
+    love.graphics.print("Controller?", x + 50, y + 225) -- TODO: implement other way
   end
   love.graphics.setColor(255,255,255)
   if #players < 4 + love.joystick.getJoystickCount() then
@@ -137,6 +142,23 @@ function gameSetup.mousepressed(mx, my, b, istouch)
       end
     elseif mx > 720 and mx < 720 + (gobutton:getHeight() * 0.3) and my > 540 and my < 540 + (gobutton:getWidth() * 0.3) then
       return game
+    end
+  end
+  return gameSetup
+end
+
+function gameSetup.keypressed(k, sc, ir)
+  for i, j in ipairs(players) do
+    if j.keys then
+      if k == j.keys.left then
+        if j.flipMode == "row" then j.flipMode = "area"
+        elseif j.flipMode == "column" then j.flipMode = "row"
+        else j.flipMode = "column" end
+      elseif k == j.keys.right then
+        if j.flipMode == "row" then j.flipMode = "column"
+        elseif j.flipMode == "column" then j.flipMode = "area"
+        else j.flipMode = "row" end
+      end
     end
   end
   return gameSetup
