@@ -117,7 +117,7 @@ function gameSetup.mousepressed(mx, my, b, istouch)
 end
 
 function gameSetup.joystickadded(j)
-  table.insert(defaultjoys, {joystick = j, used = false}
+  table.insert(defaultjoys, {joystick = j, used = false})
 end
 
 function gameSetup.joystickremoved(j)
