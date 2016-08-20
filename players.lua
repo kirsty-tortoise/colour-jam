@@ -92,17 +92,21 @@ function movePlayerIfCan(player, newX, newY, board, boardData)
   local otherX, otherY = getOtherSide(newX, newY)
   local onBoard = newX >= boardData.startX
                   and newY >= boardData.startY
-                  and otherX <= boardData.startX + boardData.width * boardData.squareSize
-                  and otherY <= boardData.startY + boardData.height * boardData.squareSize
+                  and otherX < boardData.startX + boardData.width * boardData.squareSize
+                  and otherY < boardData.startY + boardData.height * boardData.squareSize
 
   local bx1,by1 = getBXAndBY(boardData, newX, newY)
   local bx2,by2 = getBXAndBY(boardData, otherX, otherY)
   local bx, by = getBXAndBY(boardData, getMidPosition(newX, newY))
 
-  if onBoard and player.team == board[bx1][by1].colourIndex
-             and player.team == board[bx1][by2].colourIndex
-             and player.team == board[bx2][by1].colourIndex
-             and player.team == board[bx2][by2].colourIndex then
+  if onBoard and checkPosition(player, board, bx1, by1)
+             and checkPosition(player, board, bx1, by2)
+             and checkPosition(player, board, bx2, by1)
+             and checkPosition(player, board, bx2, by2) then
     player.x, player.y, player.bx, player.by = newX, newY, bx, by
   end
+end
+
+function checkPosition(player, board, bx, by)
+  return board[bx][by].isBase or player.team == board[bx][by].colourIndex
 end

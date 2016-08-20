@@ -1,4 +1,4 @@
-colours = {{250, 0, 12}, {33, 0, 250}} -- red and blue colours for now
+colours = {{250, 0, 0}, {0, 0, 204}} -- red and blue colours for now
 
 function generateRandomBoard(board, startX, startY, width, height, squareSize)
   local x = startX
@@ -9,18 +9,29 @@ function generateRandomBoard(board, startX, startY, width, height, squareSize)
       local colourIndex = math.random(2)
       board[i][j] = {x = x, y = y, colourIndex = colourIndex, squareSize = squareSize}
       y = y + squareSize
+      if (i <= 3 and j <= 3) or (i > width - 3 and j > height - 3) then
+        board[i][j].isBase = true
+      end
     end
     x = x + squareSize
   end
+
+  board.base1X, board.base1Y = startX, startY
+  board.base2X, board.base2Y = startX + (width - 3) * squareSize, startY + (height - 3) * squareSize
+
   return board
+
 end
 
 function drawBoard(board)
-  for _,col in pairs(board) do
-    for _,square in pairs(col) do
+  for _,col in ipairs(board) do
+    for _,square in ipairs(col) do
       drawSquare(square)
     end
   end
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(baseImage, board.base1X, board.base1Y, 0, 3 * boardData.squareSize / baseImage:getWidth(), 3 * boardData.squareSize / baseImage:getHeight())
+  love.graphics.draw(baseImage, board.base2X, board.base2Y, 0, 3 * boardData.squareSize / baseImage:getWidth(), 3 * boardData.squareSize / baseImage:getHeight())
 end
 
 function drawSquare(square)
