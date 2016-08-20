@@ -1,6 +1,6 @@
 gameSetup = {code="game-setup"}
 
-local players = {}
+players = {}
 local keysToSet = {"up", "down", "left", "right", "flip"}
 local keySetting, playerSetting, keysTaken
 local errorMsg
@@ -25,10 +25,10 @@ function gameSetup.keypressed(key, scancode, isrepeat)
       errorMsg = nil
 
       if keySetting == 1 then
-        table.insert(players, {})
+        table.insert(players, {keys = {}})
       end
 
-      players[playerSetting][keysToSet[keySetting]] = key -- save this
+      players[playerSetting].keys[keysToSet[keySetting]] = key -- save this
 
       keysTaken[key] = true
 

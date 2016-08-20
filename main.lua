@@ -1,4 +1,4 @@
-requires = {"menu", "game", "boards", "game-setup"}
+requires = {"menu", "game", "boards", "game-setup", "players"}
 
 for _,j in pairs(requires) do
   require(j)
@@ -9,6 +9,8 @@ local lastGamestate
 
 largeFont = love.graphics.newFont(36)
 mediumFont = love.graphics.newFont(18)
+
+mainCharacter = love.graphics.newImage("art/mainchar.png")
 
 function love.load()
   gamestate = gameSetup
@@ -24,6 +26,10 @@ function love.draw()
 end
 
 function love.update(dt)
+  if gamestate.code ~= lastGamestate then
+    gamestate.setup()
+    lastGamestate = gamestate.code
+  end
   if gamestate.update then
     gamestate = gamestate.update(dt)
     if gamestate.code ~= lastGamestate then
