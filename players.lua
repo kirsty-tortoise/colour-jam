@@ -1,6 +1,6 @@
 function drawPlayer(player)
   love.graphics.setColor(player.colour)
-  love.graphics.draw(mainCharacter, player.x, player.y)
+  love.graphics.draw(mainCharacter, player.x, player.y, 0, boardData.squareSize / mainCharacter:getHeight(), boardData.squareSize / mainCharacter:getHeight())
 end
 
 function updatePlayer(player, dt)
@@ -20,11 +20,7 @@ function updatePlayer(player, dt)
     newX = player.x + player.speed
   end
 
-  local newBx, newBy = getBXAndBY(boardData, newX, newY)
-  if player.team == board[newBx][newBy].colourIndex then
-    player.x, player.y, player.bx, player.by = newX, newY, newBx, newBy
-  end
-
+  movePlayerIfCan(player, newX, newY, board, boardData)
 end
 
 function processKeypressPlayer(player, key)
@@ -79,8 +75,40 @@ function keyreleaseAllPlayers(players, key)
 end
 
 function getBXAndBY(boardData, x, y)
-  -- temporary code
-  local bx = math.floor((x - boardData.startX) / boardData.squareSize)
-  local by = math.floor((y - boardData.startY) / boardData.squareSize)
+  local bx = math.floor((x - boardData.startX) / boardData.squareSize) + 1
+  local by = math.floor((y - boardData.startY) / boardData.squareSize) + 1
   return bx, by
+end
+
+function getMidPosition(x, y)
+  return x + boardData.squareSize * 0.2, y + boardData.squareSize / 2
+end
+
+function getOtherSide(x,y)
+  return x + boardData.squareSize * 0.4, y + boardData.squareSize
+end
+
+function movePlayerIfCan(player, newX, newY, board, boardData)
+  local otherX, otherY = getOtherSide(newX, newY)
+  local onBoard = newX >= boardData.startX
+                  and newY >= boardData.startY
+                  and otherX <= boardData.startX + boardData.width * boardData.squareSize
+                  and otherY <= boardData.startY + boardData.height * boardData.squareSize
+  local x,y
+  if player.x > newX then
+    x = newX
+  else
+    x = otherX
+  end
+  if player.y > newY then
+    y = newY
+  else
+    y = otherY
+  end
+
+  local bx,by = getBXAndBY(boardData, x, y)
+
+  if onBoard and player.team == board[bx][by].colourIndex then
+    player.x, player.y, player.bx, player.by = newX, newY, bx, by
+  end
 end
