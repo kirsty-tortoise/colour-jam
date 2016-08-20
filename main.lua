@@ -58,6 +58,30 @@ function love.keyreleased(key)
   end
 end
 
+function love.joystickadded(j)
+  if gamestate.joystickadded then
+    gamestate = gamestate.joystickadded(j)
+  end
+end
+
+function love.joystickremoved(j)
+  if gamestate.joystickremoved then
+    gamestate = gamestate.joystickremoved(j)
+  end
+end
+
+function love.joystickpressed(j, b)
+  if gamestate.joystickpressed then
+    gamestate = gamestate.joystickpressed(j, b)
+  end
+end
+
+function love.joystickreleased(j, b)
+  if gamestate.joystickreleased then
+    gamestate = gamestate.joystickreleased(j, b)
+  end
+end
+
 function love.quit()
   local toQuit
   if gamestate.quit then
