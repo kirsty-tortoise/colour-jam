@@ -12,7 +12,7 @@ local gobutton = love.graphics.newImage("art/go.png")
 function gameSetup.setup()
   playerSetting, keySetting = 1,1
   players = {}
-  table.insert(players, {keys = defaultkeys[1]})
+  table.insert(players, {keys = defaultkeys[1], flipMode = "row", team = 0})
   keysTaken = {}
   errorMsg = nil
   return gameSetup
@@ -50,9 +50,11 @@ function gameSetup.draw()
     else
       love.graphics.printf("Is AI", x + 15, y + 75, 120, "center")
     end
+    love.graphics.setFont(mediumFont)
+    love.graphics.printf("Flip Mode: "..j.flipMode, x + 15, y + 160, 120, "center")
   end
   love.graphics.setColor(255,255,255)
-  if #players < 8 then
+  if #players < 4 + love.joystick.getJoystickCount() then
     -- Render "+" button
     local x, y = rectanglePosition(#players + 1)
     love.graphics.draw(addplayer, x - 2, y + 10, 0, 0.4)
@@ -82,9 +84,9 @@ function gameSetup.mousepressed(mx, my, b, istouch)
     local h, w = addplayer:getHeight() * 0.4, addplayer:getWidth() * 0.4
     if mx > x - 2 and mx < x - 2 + w and my > y + 10 and my < y + 10 + h then
       if defaultkeysindex > #defaultkeys then
-        table.insert(players, {})
+        table.insert(players, {flipMode = "row", team = 0})
       else
-        table.insert(players, {keys=defaultkeys[defaultkeysindex]})
+        table.insert(players, {keys=defaultkeys[defaultkeysindex], flipMode = "row", team = 0})
         defaultkeysindex = defaultkeysindex + 1
       end
     elseif mx > 720 and mx < 720 + (gobutton:getHeight() * 0.3) and my > 540 and my < 540 + (gobutton:getWidth() * 0.3) then
