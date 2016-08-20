@@ -1,21 +1,27 @@
-ART
- - [x] Characters
- - [x] Player Numbers
- - [ ] Bases - need to apply special blend stuff here! Draw the base, set blendMode to add, draw a rectangle of colour and then change blendMode back to alpha.
- - [x] Flags
- - [ ] Arrows
+### Game Play
+ - [ ] Fix the problems that occur when you flip when you aren't quite completely in your square.
+ - [ ] Add flags!
+    - [ ] Flag starts in the right place
+    - [ ] Flag is actually displayed
+    - [ ] Pick up and move a flag
+    - [ ] Signal on score
+ - [ ] Change setup people are in the right places at the start and anything else is sorted
+ - [ ] Add a timer which counts down
+ - [ ] Add a score and a tug of war thing
+ - [ ] Add joystick controls to the game and make this not crash everything (check for player.keys)
 
-PROGRAMMING
- - [ ] Characters
- - [ ] Flipping squares
- - [ ] Movement
- - [ ] Key and controller mapping
-    - [ ] Compound direction controllers? Easily found: Joystick:getAxis(n), where n is 1 for x of left, 2 for y of left, 3 for x of right, 4 for y of right.
- - [ ] Game setup screen
-    - [ ] Deal with joystick controls as well
-    - [x] Actually draw things to tell people what to do
-    - [ ] Draw things in a way that actually looks nice
- - [ ] Team selection or changing as an option, like Mario Kart
+### Game Setup
+Finnbar can complete this...
+
+### Slightly crazy stuff if we have a bit more time
+ - [ ] Changing teams if a square you are on is swapped
  - [ ] Barriers
+ - [ ] Level editor
+ - [ ] Built in grids
+ - [ ] Animations of flipping and stuff
+ - [ ] Time limit to get the flag back to your base
+ - [ ] Music and sound effects
 
-MUSIC?
+### Extra crazy stuff for if we somehow have lots of time
+ - [ ] AIs so you can play by yourself
+ - [ ] Possibility to play over the Internet if there aren't lots of people at your house
