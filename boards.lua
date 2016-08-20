@@ -1,11 +1,13 @@
-function generateRandomBoard(board, startX, startY, width, height, squareSize, colours)
+colours = {{250, 0, 12}, {33, 0, 250}} -- red and blue colours for now
+
+function generateRandomBoard(board, startX, startY, width, height, squareSize)
   local x = startX
   for i = 1,width do
     local y = startY
     board[i] = {}
     for j = 1,height do
-      local colour = colours[math.random(2)]
-      board[i][j] = {x = x, y = y, colour = colour, squareSize = squareSize}
+      local colourIndex = math.random(2)
+      board[i][j] = {x = x, y = y, colourIndex = colourIndex, squareSize = squareSize}
       y = y + squareSize
     end
     x = x + squareSize
@@ -22,6 +24,6 @@ function drawBoard(board)
 end
 
 function drawSquare(square)
-  love.graphics.setColor(square.colour)
+  love.graphics.setColor(colours[square.colourIndex])
   love.graphics.rectangle("fill", square.x, square.y, square.squareSize, square.squareSize)
 end

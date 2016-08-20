@@ -5,7 +5,7 @@ local newGame = true
 
 function game.update(dt)
   if newGame then
-    board = generateRandomBoard(board, 0, 0, 16, 10, 50, {{250, 0, 12}, {33, 0, 250}})
+    board = generateRandomBoard(board, 0, 0, 16, 10, 50)
     newGame = false
   end
   return game

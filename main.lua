@@ -4,7 +4,7 @@ for _,j in pairs(requires) do
   require(j)
 end
 
-local gamestate = menu
+local gamestate
 
 function love.load()
   gamestate = game
