@@ -9,6 +9,7 @@ local lastGamestate
 
 largeFont = love.graphics.newFont(36)
 mediumFont = love.graphics.newFont(18)
+smallFont = love.graphics.newFont(12)
 
 mainCharacter = love.graphics.newImage("art/mainchar.png")
 
