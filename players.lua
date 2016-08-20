@@ -153,8 +153,8 @@ function checkPosition(player, board, bx, by)
   return board[bx][by].isBase or player.team == board[bx][by].colourIndex
 end
 
-function movePlayerTo(player, boardData, bx, by)
-  player.bx, player.by = bx, by
-  player.x = boardData.startX + boardData.squareSize * (bx - 0.8)
-  player.y = boardData.startY + boardData.squareSize * (by - 1)
+function movePlayerTo(object, boardData, bx, by)
+  object.bx, object.by = bx, by
+  object.x = boardData.startX + boardData.squareSize * (bx - 0.8)
+  object.y = boardData.startY + boardData.squareSize * (by - 1)
 end
