@@ -51,6 +51,12 @@ function love.keypressed( key, scancode, isrepeat )
   end
 end
 
+function love.keyreleased(key)
+  if gamestate.keyreleased then
+    gamestate = gamestate.keyreleased(key)
+  end
+end
+
 function love.quit()
   local toQuit
   if gamestate.quit then

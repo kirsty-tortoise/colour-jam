@@ -28,30 +28,28 @@ function updatePlayer(player, dt)
 end
 
 function processKeypressPlayer(player, key)
-  print(player.key.left)
-  if key == player.key.up then
+  if key == player.keys.up then
     player.up = true
-  elseif key == player.key.down then
+  elseif key == player.keys.down then
     player.down = true
-  elseif key == player.key.left then
-    print("moving left")
+  elseif key == player.keys.left then
     player.left = true
-  elseif key == player.key.right then
+  elseif key == player.keys.right then
     player.right = true
-  elseif key == player.key.flip and player.timer >= 0 then
+  elseif key == player.keys.flip and player.timer >= 0 then
     flipBoard(player.flipMode, board, player.row, player.col)
     player.timer = -2
   end
 end
 
 function processKeyreleasePlayer(player, key)
-  if key == player.key.up then
+  if key == player.keys.up then
     player.up = false
-  elseif key == player.key.down then
+  elseif key == player.keys.down then
     player.down = false
-  elseif key == player.key.left then
+  elseif key == player.keys.left then
     player.left = false
-  elseif key == player.key.right then
+  elseif key == player.keys.right then
     player.right = false
   end
 end
@@ -65,6 +63,18 @@ end
 function drawAllPlayers(players)
   for _,player in pairs(players) do
     drawPlayer(player)
+  end
+end
+
+function keypressAllPlayers(players, key)
+  for _,player in pairs(players) do
+    processKeypressPlayer(player, key)
+  end
+end
+
+function keyreleaseAllPlayers(players, key)
+  for _,player in pairs(players) do
+    processKeyreleasePlayer(player, key)
   end
 end
 

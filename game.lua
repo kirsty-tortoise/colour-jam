@@ -27,3 +27,13 @@ function game.draw()
   drawAllPlayers(players)
   return game
 end
+
+function game.keypressed(key, scancode, isrepeat)
+  keypressAllPlayers(players, key)
+  return game
+end
+
+function game.keyreleased(key)
+  keyreleaseAllPlayers(players, key)
+  return game
+end
