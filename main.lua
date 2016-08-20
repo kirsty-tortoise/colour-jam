@@ -1,4 +1,4 @@
-requires = {"menu", "game", "boards"}
+requires = {"menu", "game", "boards", "game-setup"}
 
 for _,j in pairs(requires) do
   require(j)
@@ -32,6 +32,12 @@ end
 function love.mousepressed(x, y, button, istouch)
   if gamestate.mousepressed then
     gamestate = gamestate.mousepressed(x, y, button, istouch)
+  end
+end
+
+function love.keypressed( key, scancode, isrepeat )
+  if gamestate.keypressed then
+    gamestate = gamestate.keypressed(key, scancode, isrepeat)
   end
 end
 
