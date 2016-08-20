@@ -38,7 +38,7 @@ end
 
 function updateFlag(flag, boardData)
   if not flag.isDown then
-    flag.x, flag.y = flag.playerHolding.x, flag.playerHolding.y
-    flag.bx, flag.by = getBXAndBY(boardData, flag.x, flag.y)
+    flag.x, flag.y = flag.playerHolding.x + 0.4 * boardData.squareSize, flag.playerHolding.y - 0.1 * boardData.squareSize
+    flag.bx, flag.by = getBXAndBY(boardData, flag.playerHolding.x, flag.playerHolding.y)
   end
 end

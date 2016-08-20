@@ -6,7 +6,7 @@
     - [x] Pick up and move a flag
     - [ ] Signal on score
     - [ ] Have some way to make them drop the flag
-    - [ ] Move flag so it doesn't get in your
+    - [x] Move flag so it doesn't get in their face
  - [x] Change setup people are in the right places at the start and anything else is sorted
  - [ ] Add a timer which counts down
  - [ ] Add a score and a tug of war thing
