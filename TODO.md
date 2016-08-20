@@ -26,4 +26,4 @@
 ### Extra crazy stuff for if we somehow have lots of time
  - [ ] AIs so you can play by yourself
  - [ ] Possibility to play over the Internet if there aren't lots of people at your house
- - [ ] Haptic feedback
+ - [ ] Haptic feedback!

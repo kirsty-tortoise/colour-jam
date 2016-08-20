@@ -1,24 +1,19 @@
 gameSetup = {code="game-setup"}
 
 players = {}
-local keysToSet = {"up", "down", "left", "right", "flip"}
-local keySetting, playerSetting, keysTaken
-local errorMsg
 local defaultkeys = {{keys={up="up", down="down", left="left", right="right", flip="space"}, used=false}, {keys={up="w", down="s", left="a", right="d", flip="e"}, used=false}, {keys={up="t", down="g", left="f", right="h", flip="y"}, used=false}, {keys={up="i", down="k", left="j", right="l", flip="o"}, used=false}}
-local defaultjoys = love.joystick.getJoysticks()
-for i in pairs(defaultjoys) do
-  defaultjoys[i] = {joystick = defaultjoys[i], used = false}
-end
+local defaultjoys = {}
 local addplayer = love.graphics.newImage("art/addplayer.png")
 local gobutton = love.graphics.newImage("art/go.png")
 
 function gameSetup.setup()
-  playerSetting, keySetting = 1,1
+  defaultjoys = love.joystick.getJoysticks()
+  for i in pairs(defaultjoys) do
+    defaultjoys[i] = {joystick = defaultjoys[i], used = false}
+  end
   players = {}
   table.insert(players, {keys = defaultkeys[1].keys, flipMode = "row", team = 0})
   defaultkeys[1].used = true
-  keysTaken = {}
-  errorMsg = nil
   return gameSetup
 end
 
