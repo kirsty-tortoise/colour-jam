@@ -1,4 +1,4 @@
-requires = {"menu", "game", "boards", "game-setup", "players"}
+requires = {"title", "game", "boards", "game-setup", "players", "tween"}
 
 for _,j in pairs(requires) do
   require(j)
@@ -13,9 +13,9 @@ mediumFont = love.graphics.newFont(18)
 mainCharacter = love.graphics.newImage("art/mainchar.png")
 
 function love.load()
-  gamestate = gameSetup
+  gamestate = title
   lastGamestate = gamestate.code
-  gamestate.setup()
+  if gamestate.setup then gamestate.setup() end
   math.randomseed(os.time())
 end
 
@@ -27,13 +27,13 @@ end
 
 function love.update(dt)
   if gamestate.code ~= lastGamestate then
-    gamestate.setup()
+    if gamestate.setup then gamestate.setup() end
     lastGamestate = gamestate.code
   end
   if gamestate.update then
     gamestate = gamestate.update(dt)
     if gamestate.code ~= lastGamestate then
-      gamestate.setup()
+      if gamestate.setup then gamestate.setup() end
       lastGamestate = gamestate.code
     end
   end
