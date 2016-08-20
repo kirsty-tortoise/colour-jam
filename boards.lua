@@ -1,5 +1,8 @@
 colours = {{250, 0, 0}, {0, 0, 204}} -- red and blue colours for now
 
+local baseImage1 = love.graphics.newImage("art/base1.png")
+local baseImage2 = love.graphics.newImage("art/base2.png")
+
 function generateRandomBoard(board, startX, startY, width, height, squareSize)
   local x = startX
   for i = 1,width do
@@ -30,8 +33,8 @@ function drawBoard(board)
     end
   end
   love.graphics.setColor(255, 255, 255)
-  love.graphics.draw(baseImage, board.base1X, board.base1Y, 0, 3 * boardData.squareSize / baseImage:getWidth(), 3 * boardData.squareSize / baseImage:getHeight())
-  love.graphics.draw(baseImage, board.base2X, board.base2Y, 0, 3 * boardData.squareSize / baseImage:getWidth(), 3 * boardData.squareSize / baseImage:getHeight())
+  love.graphics.draw(baseImage1, board.base1X, board.base1Y, 0, 3 * boardData.squareSize / baseImage1:getWidth(), 3 * boardData.squareSize / baseImage1:getHeight())
+  love.graphics.draw(baseImage2, board.base2X, board.base2Y, 0, 3 * boardData.squareSize / baseImage2:getWidth(), 3 * boardData.squareSize / baseImage2:getHeight())
 end
 
 function drawSquare(square)

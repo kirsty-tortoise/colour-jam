@@ -2,7 +2,6 @@ game = {code="game"}
 
 board = {}
 boardData = {startX = 0, startY = 0, width = 16, height = 10, squareSize = 50}
-baseImage = love.graphics.newImage("art/base.png")
 
 function game.setup()
   board = generateRandomBoard(board, boardData.startX, boardData.startY, boardData.width, boardData.height, boardData.squareSize)
