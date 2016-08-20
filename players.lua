@@ -8,16 +8,16 @@ function updatePlayer(player, dt)
 
   local newX, newY = player.x, player.y
   if player.up then
-    newY = player.y - player.speed
+    newY = player.y - player.speed * dt
   end
   if player.down then
-    newY = player.y + player.speed
+    newY = player.y + player.speed * dt
   end
   if player.left then
-    newX = player.x - player.speed
+    newX = player.x - player.speed * dt
   end
   if player.right then
-    newX = player.x + player.speed
+    newX = player.x + player.speed * dt
   end
 
   movePlayerIfCan(player, newX, newY, board, boardData)
@@ -34,7 +34,7 @@ function processKeypressPlayer(player, key)
     player.right = true
   elseif key == player.keys.flip and player.timer >= 0 then
     flipBoard(player.flipMode, board, player.bx, player.by)
-    player.timer = -2
+    player.timer = -1
   end
 end
 

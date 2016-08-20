@@ -13,7 +13,7 @@ function game.setup()
     player.timer = 0
     player.team = 1
     player.colour = colours[player.team]
-    player.speed = 5
+    player.speed = 70.0
     player.flipMode = "area"
   end
   return game
