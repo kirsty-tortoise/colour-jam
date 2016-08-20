@@ -12,8 +12,10 @@ function generateRandomBoard(board, startX, startY, width, height, squareSize)
       local colourIndex = math.random(2)
       board[i][j] = {x = x, y = y, colourIndex = colourIndex, squareSize = squareSize}
       y = y + squareSize
-      if (i <= 3 and j <= 3) or (i > width - 3 and j > height - 3) then
-        board[i][j].isBase = true
+      if i <= 3 and j <= 3 then
+        board[i][j].teamBase = 1
+      elseif i > width - 3 and j > height - 3 then
+        board[i][j].teamBase = 2
       end
     end
     x = x + squareSize

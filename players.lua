@@ -150,7 +150,7 @@ function movePlayerIfCan(player, newX, newY, board, boardData)
 end
 
 function checkPosition(player, board, bx, by)
-  return board[bx][by].isBase or player.team == board[bx][by].colourIndex
+  return board[bx][by].teamBase or player.team == board[bx][by].colourIndex
 end
 
 function movePlayerTo(object, boardData, bx, by)
