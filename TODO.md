@@ -5,7 +5,7 @@
     - [ ] Flag is actually displayed
     - [ ] Pick up and move a flag
     - [ ] Signal on score
- - [ ] Change setup people are in the right places at the start and anything else is sorted
+ - [x] Change setup people are in the right places at the start and anything else is sorted
  - [ ] Add a timer which counts down
  - [ ] Add a score and a tug of war thing
  - [ ] Add joystick controls to the game and make this not crash everything (check for player.keys)

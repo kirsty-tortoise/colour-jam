@@ -1,4 +1,4 @@
-colours = {{250, 0, 0}, {0, 0, 204}} -- red and blue colours for now
+colours = {{61, 82, 213}, {39, 251, 107}} -- blue and green colours for now
 
 local baseImage1 = love.graphics.newImage("art/base1.png")
 local baseImage2 = love.graphics.newImage("art/base2.png")
