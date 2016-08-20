@@ -14,6 +14,7 @@ end
 
 function game.update(dt)
   updateAllPlayers(players, dt)
+  updateFlags(players, flag1, flag2, boardData)
   return game
 end
 
