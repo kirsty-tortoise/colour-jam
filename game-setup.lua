@@ -5,6 +5,7 @@ local defaultkeys = {{keys={up="up", down="down", left="left", right="right", fl
 local defaultjoys = {}
 local addplayer = love.graphics.newImage("art/addplayer.png")
 local gobutton = love.graphics.newImage("art/go.png")
+local mustSpecifyJoyButton = false
 
 function gameSetup.setup()
   defaultjoys = love.joystick.getJoysticks()
@@ -44,8 +45,8 @@ function gameSetup.draw()
       love.graphics.printf(keystrings[4], x + 95, y + 80, 40, "center")
       love.graphics.rectangle("line", x + 15, y + 120, 120, 25)
       love.graphics.printf(j.keys.flip, x + 15, y + 125, 125, "center")
-    elseif j.controller then
-      love.graphics.printf("Using controller", x + 15, y + 50, 120, "center") -- TODO: add controller name / number
+    elseif j.joystick then
+      love.graphics.printf("Using controller: "..j.joystick:getName().." with ID "..j.joystick:getID()..".", x + 15, y + 50, 120, "center")
     else
       love.graphics.printf("Is AI", x + 15, y + 75, 120, "center")
     end
@@ -60,6 +61,13 @@ function gameSetup.draw()
   end
   if #players > 1 then
     love.graphics.draw(gobutton, 720, 540, 0, 0.3)
+  end
+  if mustSpecifyJoyButton then
+    love.graphics.setColor(0,0,0,50)
+    love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
+    love.graphics.setColor(255,255,255)
+    love.graphics.setFont(largeFont)
+    love.graphics.printf("Please press a button to use as flip.",0,0,800)
   end
   return gameSetup
 end
@@ -93,6 +101,7 @@ function gameSetup.mousepressed(mx, my, b, istouch)
       if joystickfree > 0 then
         table.insert(players, {flipMode = "row", joystick = defaultjoys[joystickfree].joystick, buttonid = 0, team = 0})
         defaultjoys[joystickfree].used = true
+        mustSpecifyJoyButton = true
       else
         local keyboardfree = 0
         for i in pairs(defaultkeys) do
