@@ -11,7 +11,8 @@
  - [ ] Add joystick controls to the game and make this not crash everything (check for player.keys)
 
 ### Game Setup
-Finnbar can complete this...
+ - [ ] Deal with joystick disconnects by de-pairing player and joystick.
+ - [ ] Allow players to swap between joystick and keyboard and vice-versa.
 
 ### Slightly crazy stuff if we have a bit more time
  - [ ] Changing teams if a square you are on is swapped
@@ -25,3 +26,4 @@ Finnbar can complete this...
 ### Extra crazy stuff for if we somehow have lots of time
  - [ ] AIs so you can play by yourself
  - [ ] Possibility to play over the Internet if there aren't lots of people at your house
+ - [ ] Haptic feedback
