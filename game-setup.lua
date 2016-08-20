@@ -4,15 +4,19 @@ players = {}
 local keysToSet = {"up", "down", "left", "right", "flip"}
 local keySetting, playerSetting, keysTaken
 local errorMsg
-local defaultkeys = {{up="up", down="down", left="left", right="right", flip="space"}, {up="w", down="s", left="a", right="d", flip="e"}, {up="t", down="g", left="f", right="h", flip="y"}, {up="i", down="k", left="j", right="l", flip="o"}}
-local defaultkeysindex = 2
+local defaultkeys = {{keys={up="up", down="down", left="left", right="right", flip="space"}, used=false}, {keys={up="w", down="s", left="a", right="d", flip="e"}, used=false}, {keys={up="t", down="g", left="f", right="h", flip="y"}, used=false}, {keys={up="i", down="k", left="j", right="l", flip="o"}, used=false}}
+local defaultjoys = love.joystick.getJoysticks()
+for i in pairs(defaultjoys) do
+  defaultjoys[i] = {joystick = defaultjoys[i], used = false}
+end
 local addplayer = love.graphics.newImage("art/addplayer.png")
 local gobutton = love.graphics.newImage("art/go.png")
 
 function gameSetup.setup()
   playerSetting, keySetting = 1,1
   players = {}
-  table.insert(players, {keys = defaultkeys[1], flipMode = "row", team = 0})
+  table.insert(players, {keys = defaultkeys[1].keys, flipMode = "row", team = 0})
+  defaultkeys[1].used = true
   keysTaken = {}
   errorMsg = nil
   return gameSetup
@@ -83,11 +87,32 @@ function gameSetup.mousepressed(mx, my, b, istouch)
     local x, y = rectanglePosition(#players + 1)
     local h, w = addplayer:getHeight() * 0.4, addplayer:getWidth() * 0.4
     if mx > x - 2 and mx < x - 2 + w and my > y + 10 and my < y + 10 + h then
-      if defaultkeysindex > #defaultkeys then
-        table.insert(players, {flipMode = "row", team = 0})
+      -- First try to add a joystick:
+      local joystickfree = 0
+      for i in pairs(defaultjoys) do
+        if not defaultjoys[i].used then
+          joystickfree = i
+          break
+        end
+      end
+      if joystickfree > 0 then
+        table.insert(players, {flipMode = "row", joystick = defaultjoys[joystickfree].joystick, buttonid = 0, team = 0})
+        defaultjoys[joystickfree].used = true
       else
-        table.insert(players, {keys=defaultkeys[defaultkeysindex], flipMode = "row", team = 0})
-        defaultkeysindex = defaultkeysindex + 1
+        local keyboardfree = 0
+        for i in pairs(defaultkeys) do
+          if not defaultkeys[i].used then
+            keyboardfree = i
+            break
+          end
+        end
+        if keyboardfree > 0 then
+          table.insert(players, {flipMode = "row", keys = defaultkeys[keyboardfree].keys, team = 0})
+          defaultkeys[keyboardfree].used = true
+        else
+          -- Nothing's free, sad. Add "AI"
+          table.insert(players, {flipMode = "row", team = 0})
+        end
       end
     elseif mx > 720 and mx < 720 + (gobutton:getHeight() * 0.3) and my > 540 and my < 540 + (gobutton:getWidth() * 0.3) then
       return game
@@ -96,48 +121,18 @@ function gameSetup.mousepressed(mx, my, b, istouch)
   return gameSetup
 end
 
--- function gameSetup.keypressed(key, scancode, isrepeat)
---   if key == "return" and keySetting == 1 then
---     return game
---   else
---     if key == "return" then
---       errorMsg = "You can't choose the enter key, choose another"
---     elseif keysTaken[key] then
---       errorMsg = "That key has already been chosen, choose another key"
---     else
---       errorMsg = nil
+function gameSetup.joystickadded(j)
+  table.insert(defaultjoys, {joystick = j, used = false}
+end
 
---       if keySetting == 1 then
---         table.insert(players, {keys = {}})
---       end
-
---       players[playerSetting].keys[keysToSet[keySetting]] = key -- save this
-
---       keysTaken[key] = true
-
---       -- change the current key and player being set
---       keySetting = keySetting + 1
---       if keySetting > #keysToSet then
---         playerSetting = playerSetting + 1
---         keySetting = 1
---       end
---     end
---   end
---   return gameSetup
--- end
-
--- function gameSetup.draw()
---   local data = "Player "..playerSetting..", press the key or move joystick you want to use for " .. keysToSet[keySetting] .. "."
---   if keySetting == 1 then
---     data = data .. " If there are no more players, press enter to continue."
---   end
-
---   love.graphics.setFont(largeFont)
---   love.graphics.printf(data, 50, 100, 750, "center")
-
---   if errorMsg then
---     love.graphics.setFont(mediumFont)
---     love.graphics.printf(errorMsg, 50, 500, 750, "center")
---   end
---   return gameSetup
--- end
+function gameSetup.joystickremoved(j)
+  local eyedee = j:getID()
+  local removedindex = 0
+  for i in pairs(defaultjoys) do
+    if defaultjoys[i].joystick:getID() == eyedee then
+      removedindex = i
+      break
+    end
+  end
+  table.remove(defaultjoys, removedindex)
+end
