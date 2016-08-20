@@ -1,6 +1,6 @@
 function drawPlayer(player)
   love.graphics.setColor(player.colour)
-  love.graphics.draw(mainCharacter, player.x, player.y, 0, boardData.squareSize / mainCharacter:getHeight(), boardData.squareSize / mainCharacter:getHeight())
+  love.graphics.draw(mainCharacter, player.x, player.y, 0, boardData.squareSize * 0.9 / mainCharacter:getHeight(), boardData.squareSize * 0.9 / mainCharacter:getHeight())
 end
 
 function updatePlayer(player, dt)
@@ -85,7 +85,7 @@ function getMidPosition(x, y)
 end
 
 function getOtherSide(x,y)
-  return x + boardData.squareSize * 0.4, y + boardData.squareSize
+  return x + boardData.squareSize * 0.5 * 0.9, y + boardData.squareSize * 0.9
 end
 
 function movePlayerIfCan(player, newX, newY, board, boardData)
@@ -94,21 +94,15 @@ function movePlayerIfCan(player, newX, newY, board, boardData)
                   and newY >= boardData.startY
                   and otherX <= boardData.startX + boardData.width * boardData.squareSize
                   and otherY <= boardData.startY + boardData.height * boardData.squareSize
-  local x,y
-  if player.x > newX then
-    x = newX
-  else
-    x = otherX
-  end
-  if player.y > newY then
-    y = newY
-  else
-    y = otherY
-  end
 
-  local bx,by = getBXAndBY(boardData, x, y)
+  local bx1,by1 = getBXAndBY(boardData, newX, newY)
+  local bx2,by2 = getBXAndBY(boardData, otherX, otherY)
+  local bx, by = getBXAndBY(boardData, getMidPosition(newX, newY))
 
-  if onBoard and player.team == board[bx][by].colourIndex then
+  if onBoard and player.team == board[bx1][by1].colourIndex
+             and player.team == board[bx1][by2].colourIndex
+             and player.team == board[bx2][by1].colourIndex
+             and player.team == board[bx2][by2].colourIndex then
     player.x, player.y, player.bx, player.by = newX, newY, bx, by
   end
 end

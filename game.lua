@@ -7,7 +7,7 @@ function game.setup()
   board = generateRandomBoard(board, boardData.startX, boardData.startY, boardData.width, boardData.height, boardData.squareSize)
   for _,player in pairs(players) do
     -- temporary code so things work
-    player.x,player.y = 10,10
+    player.x,player.y = 1,1
     player.bx, player.by = 1,1
     player.timer = 0
     player.team = 1
