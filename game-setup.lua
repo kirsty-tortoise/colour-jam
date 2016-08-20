@@ -13,8 +13,22 @@ function gameSetup.setup()
     defaultjoys[i] = {joystick = defaultjoys[i], used = false}
   end
   players = {}
-  table.insert(players, {keys = defaultkeys[1].keys, flipMode = "row", team = 0})
-  defaultkeys[1].used = true
+  if #defaultjoys > 0 then
+    table.insert(players, {joystick = defaultjoys[1].joystick, flipMode = "row", team = 0})
+    defaultjoys[1].used = true
+    if #defaultjoys > 1 then
+      table.insert(players, {joystick = defaultjoys[2].joystick, flipMode = "row", team = 0})
+      defaultjoys[2].used = true
+    else
+      table.insert(players, {keys = defaultkeys[1].keys, flipMode = "row", team = 0})
+      defaultkeys[1].used = true
+    end
+  else
+    table.insert(players, {keys = defaultkeys[1].keys, flipMode = "row", team = 0})
+    table.insert(players, {keys = defaultkeys[2].keys, flipMode = "row", team = 0})
+    defaultkeys[1].used = true
+    defaultkeys[2].used = true
+  end
   return gameSetup
 end
 
