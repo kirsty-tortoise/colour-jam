@@ -20,9 +20,9 @@ function updatePlayer(player, dt)
     newX = player.x + player.speed
   end
 
-  local newRow, newCol = getRowAndCol(boardData, newX, newY)
-  if player.team == board[newRow][newCol].colourIndex then
-    player.x, player.y, player.row, player.col = newX, newY, newRow, newCol
+  local newBx, newBy = getBXAndBY(boardData, newX, newY)
+  if player.team == board[newBx][newBy].colourIndex then
+    player.x, player.y, player.bx, player.by = newX, newY, newBx, newBy
   end
 
 end
@@ -37,7 +37,7 @@ function processKeypressPlayer(player, key)
   elseif key == player.keys.right then
     player.right = true
   elseif key == player.keys.flip and player.timer >= 0 then
-    flipBoard(player.flipMode, board, player.row, player.col)
+    flipBoard(player.flipMode, board, player.bx, player.by)
     player.timer = -2
   end
 end
@@ -78,7 +78,9 @@ function keyreleaseAllPlayers(players, key)
   end
 end
 
-function getRowAndCol(boardData, x, y)
+function getBXAndBY(boardData, x, y)
   -- temporary code
-  return 1,1
+  local bx = math.floor((x - boardData.startX) / boardData.squareSize)
+  local by = math.floor((y - boardData.startY) / boardData.squareSize)
+  return bx, by
 end

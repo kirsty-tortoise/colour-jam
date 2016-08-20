@@ -8,7 +8,7 @@ function game.setup()
   for _,player in pairs(players) do
     -- temporary code so things work
     player.x,player.y = 10,10
-    player.row, player.col = 1,1
+    player.bx, player.by = 1,1
     player.timer = 0
     player.team = 1
     player.colour = colours[player.team]
