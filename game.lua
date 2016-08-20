@@ -5,16 +5,7 @@ boardData = {startX = 0, startY = 0, width = 16, height = 10, squareSize = 50}
 
 function game.setup()
   board = generateRandomBoard(board, boardData.startX, boardData.startY, boardData.width, boardData.height, boardData.squareSize)
-  for _,player in pairs(players) do
-    -- temporary code so things work
-    player.x,player.y = boardData.squareSize * (boardData.width - 1), boardData.squareSize * (boardData.height - 1)
-    player.bx, player.by = boardData.width, boardData.height
-    player.timer = 0
-    player.team = 1
-    player.colour = colours[player.team]
-    player.speed = 70.0
-    player.flipMode = "area"
-  end
+  playerSetup(players, boardData)
   return game
 end
 

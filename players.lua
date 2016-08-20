@@ -1,3 +1,44 @@
+function getStartingPosition(playerTeam, playerNum, boardData)
+  local positions = {{1, 1}, {1, 3}, {3, 1}, {3, 3}}
+  if playerTeam == 1 then
+    return positions[playerNum][1], positions[playerNum][2]
+  else
+    return boardData.width + 1 -  positions[playerNum][1],
+           boardData.height + 1 - positions[playerNum][2]
+  end
+end
+
+function playerSetup(players, boardData)
+  local team1Count = 0
+  local team2Count = 0
+  for i,player in pairs(players) do
+    -- Set their team and colour
+    if not player.team or player.team == 0 then
+      if i % 2 == 0 then
+        player.team = 1
+      else
+        player.team = 2
+      end
+    end
+    player.colour = colours[player.team]
+
+    -- move them to the right place depending on team
+    local bx, by
+    if player.team == 1 then
+      team1Count = team1Count + 1
+      bx, by = getStartingPosition(1, team1Count, boardData)
+    else
+      team2Count = team2Count + 1
+      bx, by = getStartingPosition(2, team2Count, boardData)
+    end
+    movePlayerTo(player, boardData, bx, by)
+
+    -- Final player stuff
+    player.speed = 70.0
+    player.timer = 0
+  end
+end
+
 function drawPlayer(player)
   love.graphics.setColor(player.colour)
   love.graphics.draw(mainCharacter, player.x, player.y, 0, boardData.squareSize * 0.9 / mainCharacter:getHeight(), boardData.squareSize * 0.9 / mainCharacter:getHeight())
@@ -114,6 +155,6 @@ end
 
 function movePlayerTo(player, boardData, bx, by)
   player.bx, player.by = bx, by
-  player.x = boardData.startX + boardData.squareSize * (bx - 1)
+  player.x = boardData.startX + boardData.squareSize * (bx - 0.8)
   player.y = boardData.startY + boardData.squareSize * (by - 1)
 end
