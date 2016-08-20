@@ -1,4 +1,4 @@
-requires = {"menu", "game"}
+requires = {"menu", "game", "boards"}
 
 for _,j in pairs(requires) do
   require(j)
@@ -6,8 +6,9 @@ end
 
 local gamestate = menu
 
-function love.setup()
-  gamestate = menu
+function love.load()
+  gamestate = game
+  math.randomseed(os.time())
 end
 
 function love.draw()
