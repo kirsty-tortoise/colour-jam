@@ -12,8 +12,6 @@ function flagSetup(flag1, flag2, boardData)
   moveFlagTo(flag2, boardData, boardData.width - 1, boardData.height - 1)
   flag1.initialBX, flag1.initialBY = flag1.bx, flag1.by
   flag2.initialBX, flag1.initialBY = flag2.bx, flag2.by
-  flag1.aimBX, flag1.aimBY = flag2.bx, flag2.by
-  flag2.aimBX, flag2.aimBY = flag1.bx, flag1.by
 end
 
 function moveFlagTo(object, boardData, bx, by)
@@ -38,7 +36,12 @@ end
 
 function updateFlag(flag, boardData)
   if not flag.isDown then
-    flag.x, flag.y = flag.playerHolding.x, flag.playerHolding.y
-    flag.bx, flag.by = getBXAndBY(boardData, flag.x, flag.y)
+    flag.x, flag.y = flag.playerHolding.x + 0.4 * boardData.squareSize, flag.playerHolding.y - 0.1 * boardData.squareSize
+    flag.bx, flag.by = getBXAndBY(boardData, flag.playerHolding.x, flag.playerHolding.y)
   end
+end
+
+function isFlagBack(flag, board)
+  local teamBase = board[flag.bx][flag.by].teamBase
+  return teamBase and teamBase ~= flag.team
 end
