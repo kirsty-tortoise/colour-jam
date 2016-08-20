@@ -40,5 +40,26 @@ function drawSquare(square)
 end
 
 function flipBoard(mode, board, bx, by)
-
+  if mode == "column" then
+    for i = 1,boardData.height do
+      if by ~= i then
+        board[bx][i].colourIndex = 3 - board[bx][i].colourIndex
+      end
+    end
+  elseif mode == "row" then
+    for j = 1,boardData.width do
+      if bx ~= j then
+        board[j][by].colourIndex = 3 - board[j][by].colourIndex
+      end
+    end
+  elseif mode == "area" then
+    for i = 1,boardData.width do
+      for j = 1,boardData.height do
+        distance = math.abs(i - bx) + math.abs(j - by)
+        if distance ~= 0 and distance <= 2 then
+          board[i][j].colourIndex = 3 - board[i][j].colourIndex
+        end
+      end
+    end
+  end
 end
