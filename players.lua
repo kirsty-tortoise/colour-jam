@@ -34,6 +34,7 @@ function processKeypressPlayer(player, key)
     player.right = true
   elseif key == player.keys.flip and player.timer >= 0 then
     flipBoard(player.flipMode, board, player.bx, player.by)
+    movePlayerTo(player, boardData, player.bx, player.by)
     player.timer = -1
   end
 end
@@ -109,4 +110,10 @@ end
 
 function checkPosition(player, board, bx, by)
   return board[bx][by].isBase or player.team == board[bx][by].colourIndex
+end
+
+function movePlayerTo(player, boardData, bx, by)
+  player.bx, player.by = bx, by
+  player.x = boardData.startX + boardData.squareSize * (bx - 1)
+  player.y = boardData.startY + boardData.squareSize * (by - 1)
 end

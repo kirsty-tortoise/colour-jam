@@ -1,5 +1,5 @@
 ### Game Play
- - [ ] Fix the problems that occur when you flip when you aren't quite completely in your square.
+ - [x] Fix the problems that occur when you flip when you aren't quite completely in your square.
  - [ ] Add flags!
     - [ ] Flag starts in the right place
     - [ ] Flag is actually displayed
