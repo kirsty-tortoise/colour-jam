@@ -7,9 +7,13 @@ end
 local gamestate
 local lastGamestate
 
+largeFont = love.graphics.newFont(36)
+mediumFont = love.graphics.newFont(18)
+
 function love.load()
-  gamestate = game
+  gamestate = gameSetup
   lastGamestate = gamestate.code
+  gamestate.setup()
   math.randomseed(os.time())
 end
 

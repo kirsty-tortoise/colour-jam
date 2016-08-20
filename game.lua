@@ -12,7 +12,6 @@ function game.update(dt)
 end
 
 function game.draw()
-  print("running")
   drawBoard(board)
   return game
 end
