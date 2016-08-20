@@ -1,6 +1,6 @@
 function drawPlayer(player)
   love.graphics.setColor(player.colour)
-  love.graphics.draw(mainCharacter, player.x, player.y)
+  love.graphics.draw(mainCharacter, player.x, player.y, 0, boardData.squareSize / mainCharacter:getHeight(), boardData.squareSize / mainCharacter:getHeight())
 end
 
 function updatePlayer(player, dt)
@@ -20,11 +20,7 @@ function updatePlayer(player, dt)
     newX = player.x + player.speed
   end
 
-  local newRow, newCol = getRowAndCol(boardData, newX, newY)
-  if player.team == board[newRow][newCol].colourIndex then
-    player.x, player.y, player.row, player.col = newX, newY, newRow, newCol
-  end
-
+  movePlayerIfCan(player, newX, newY, board, boardData)
 end
 
 function processKeypressPlayer(player, key)
@@ -37,7 +33,7 @@ function processKeypressPlayer(player, key)
   elseif key == player.keys.right then
     player.right = true
   elseif key == player.keys.flip and player.timer >= 0 then
-    flipBoard(player.flipMode, board, player.row, player.col)
+    flipBoard(player.flipMode, board, player.bx, player.by)
     player.timer = -2
   end
 end
@@ -78,7 +74,41 @@ function keyreleaseAllPlayers(players, key)
   end
 end
 
-function getRowAndCol(boardData, x, y)
-  -- temporary code
-  return 1,1
+function getBXAndBY(boardData, x, y)
+  local bx = math.floor((x - boardData.startX) / boardData.squareSize) + 1
+  local by = math.floor((y - boardData.startY) / boardData.squareSize) + 1
+  return bx, by
+end
+
+function getMidPosition(x, y)
+  return x + boardData.squareSize * 0.2, y + boardData.squareSize / 2
+end
+
+function getOtherSide(x,y)
+  return x + boardData.squareSize * 0.4, y + boardData.squareSize
+end
+
+function movePlayerIfCan(player, newX, newY, board, boardData)
+  local otherX, otherY = getOtherSide(newX, newY)
+  local onBoard = newX >= boardData.startX
+                  and newY >= boardData.startY
+                  and otherX <= boardData.startX + boardData.width * boardData.squareSize
+                  and otherY <= boardData.startY + boardData.height * boardData.squareSize
+  local x,y
+  if player.x > newX then
+    x = newX
+  else
+    x = otherX
+  end
+  if player.y > newY then
+    y = newY
+  else
+    y = otherY
+  end
+
+  local bx,by = getBXAndBY(boardData, x, y)
+
+  if onBoard and player.team == board[bx][by].colourIndex then
+    player.x, player.y, player.bx, player.by = newX, newY, bx, by
+  end
 end
