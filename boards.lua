@@ -27,3 +27,7 @@ function drawSquare(square)
   love.graphics.setColor(colours[square.colourIndex])
   love.graphics.rectangle("fill", square.x, square.y, square.squareSize, square.squareSize)
 end
+
+function flipBoard(mode, board, row, col)
+
+end
