@@ -5,9 +5,11 @@ for _,j in pairs(requires) do
 end
 
 local gamestate
+local lastGamestate
 
 function love.load()
   gamestate = game
+  lastGamestate = gamestate.code
   math.randomseed(os.time())
 end
 
@@ -20,6 +22,10 @@ end
 function love.update(dt)
   if gamestate.update then
     gamestate = gamestate.update(dt)
+    if gamestate.code ~= lastGamestate then
+      gamestate.setup()
+      lastGamestate = gamestate.code
+    end
   end
 end
 

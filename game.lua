@@ -1,4 +1,4 @@
-game = {}
+game = {code="game"}
 
 local board = {}
 local newGame = true
