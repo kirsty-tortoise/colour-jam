@@ -14,6 +14,10 @@ function playerSetup(players, boardData)
   local team1Count = 0
   local team2Count = 0
   for i,player in pairs(players) do
+    player.scale = 0.7 * boardData.squareSize / mainCharacter:getHeight()
+    player.width = mainCharacter:getWidth() * player.scale
+    player.height = mainCharacter:getHeight() * player.scale
+
     -- Set their team and colour
     if not player.team or player.team == 0 then
       if i % 2 == 0 then
@@ -36,7 +40,7 @@ function playerSetup(players, boardData)
     movePlayerTo(player, boardData, bx, by)
 
     -- Final player stuff
-    player.speed = 70.0
+    player.speed = 100.0
     player.timer = 0
   end
 end
@@ -45,12 +49,12 @@ function drawPlayer(player,i)
   if player.timer < 0 then
     love.graphics.setColor(255,255,255)
     love.graphics.setLineWidth(4)
-    love.graphics.arc("line", player.x + 0.2 * boardData.squareSize, player.y + 0.35 * boardData.squareSize, boardData.squareSize  * 0.9 / 2, 0, - 2 * math.pi * player.timer / cooldown)
+    love.graphics.arc("line", player.x + 0.5 * player.width, player.y + 0.5 * player.height, player.height / 2, 0, - 2 * math.pi * player.timer / cooldown)
     love.graphics.setLineWidth(1)
   end
   love.graphics.setColor(player.colour)
-  love.graphics.draw(mainCharacter, player.x, player.y, 0, boardData.squareSize * 0.9 / mainCharacter:getHeight(), boardData.squareSize * 0.9 / mainCharacter:getHeight())
-  love.graphics.draw(floatingNumbers[i], player.x + (boardData.squareSize * 0.2) - 5, player.y - 30, 0, 0.35)
+  love.graphics.draw(mainCharacter, player.x, player.y, 0, player.scale)
+  love.graphics.draw(floatingNumbers[i], player.x + 0.25 * player.width, player.y - 0.7 * player.height, 0, 0.25)
 end
 
 function updatePlayer(player, dt)
@@ -183,16 +187,16 @@ function getBXAndBY(boardData, x, y)
   return bx, by
 end
 
-function getMidPosition(x, y)
-  return x + boardData.squareSize * 0.2, y + boardData.squareSize / 2
+function getMidPosition(player, x, y)
+  return x + player.width / 2, y + player.height / 2
 end
 
-function getOtherSide(x,y)
-  return x + boardData.squareSize * 0.5 * 0.9, y + boardData.squareSize * 0.9
+function getOtherSide(player, x, y)
+  return x + player.width, y + player.height
 end
 
 function movePlayerIfCan(player, newX, newY, board, boardData)
-  local otherX, otherY = getOtherSide(newX, newY)
+  local otherX, otherY = getOtherSide(player, newX, newY)
   local onBoard = newX >= boardData.startX
                   and newY >= boardData.startY
                   and otherX < boardData.startX + boardData.width * boardData.squareSize
@@ -200,7 +204,7 @@ function movePlayerIfCan(player, newX, newY, board, boardData)
 
   local bx1,by1 = getBXAndBY(boardData, newX, newY)
   local bx2,by2 = getBXAndBY(boardData, otherX, otherY)
-  local bx, by = getBXAndBY(boardData, getMidPosition(newX, newY))
+  local bx, by = getBXAndBY(boardData, getMidPosition(player, newX, newY))
 
   if onBoard and checkPosition(player, board, bx1, by1)
              and checkPosition(player, board, bx1, by2)
