@@ -23,7 +23,7 @@
 
 ### Game Setup
  - [x] Deal with joystick disconnects by de-pairing player and joystick.
- - [ ] Allow players to swap between joystick and keyboard and vice-versa.
+ - [x] Allow players to swap between joystick and keyboard and vice-versa.
 
 ### Slightly crazy stuff if we have a bit more time
  - [ ] Changing teams if a square you are on is swapped
