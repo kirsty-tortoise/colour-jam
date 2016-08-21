@@ -1,3 +1,5 @@
+local cooldown = 0.5
+
 function getStartingPosition(playerTeam, playerNum, boardData)
   local positions = {{1, 1}, {1, 3}, {3, 1}, {3, 3}}
   if playerTeam == 1 then
@@ -40,11 +42,14 @@ function playerSetup(players, boardData)
 end
 
 function drawPlayer(player,i)
-  love.graphics.setColor(player.colour)
-  love.graphics.draw(mainCharacter, player.x, player.y, 0, boardData.squareSize * 0.9 / mainCharacter:getHeight(), boardData.squareSize * 0.9 / mainCharacter:getHeight())
   if player.timer < 0 then
     love.graphics.setColor(255,255,255)
+    love.graphics.setLineWidth(4)
+    love.graphics.arc("line", player.x + 0.2 * boardData.squareSize, player.y + 0.35 * boardData.squareSize, boardData.squareSize  * 0.9 / 2, 0, - 2 * math.pi * player.timer / cooldown)
+    love.graphics.setLineWidth(1)
   end
+  love.graphics.setColor(player.colour)
+  love.graphics.draw(mainCharacter, player.x, player.y, 0, boardData.squareSize * 0.9 / mainCharacter:getHeight(), boardData.squareSize * 0.9 / mainCharacter:getHeight())
   love.graphics.draw(floatingNumbers[i], player.x + (boardData.squareSize * 0.2) - 5, player.y - 30, 0, 0.35)
 end
 
@@ -81,7 +86,7 @@ function processKeypressPlayer(player, key)
     elseif key == player.keys.flip and player.timer >= 0 then
       flipBoard(player.flipMode, board, player.bx, player.by)
       movePlayerTo(player, boardData, player.bx, player.by)
-      player.timer = -1
+      player.timer = -cooldown
     end
   end
 end
