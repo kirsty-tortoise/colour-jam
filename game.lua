@@ -20,6 +20,7 @@ end
 
 function game.update(dt)
   joystickUpdateAllPlayers(players)
+  updateBoard(dt)
   updateAllPlayers(players, dt)
   updateFlags(players, flag1, flag2, board, boardData)
   updateTimer(dt)

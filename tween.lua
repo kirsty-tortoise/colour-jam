@@ -46,5 +46,5 @@ end
 
 function finishTween(t)
   -- remove transition, so it moves to its final place
-  t.trans = {}
+  t.transitions = {}
 end
