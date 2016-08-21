@@ -2,6 +2,7 @@ game = {code="game"}
 
 board = {}
 boardData = {startX = 0, startY = 0, width = 16, height = 10, squareSize = 50}
+scores = {0, 0}
 local flag1, flag2
 
 function game.setup()
@@ -9,12 +10,13 @@ function game.setup()
   playerSetup(players, boardData)
   flag1, flag2 = {}, {}
   flagSetup(flag1, flag2, boardData)
+  scores = {0, 0}
   return game
 end
 
 function game.update(dt)
   updateAllPlayers(players, dt)
-  updateFlags(players, flag1, flag2, boardData)
+  updateFlags(players, flag1, flag2, board, boardData)
   return game
 end
 

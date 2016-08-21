@@ -1,15 +1,16 @@
 ### Game Play
  - [x] Fix the problems that occur when you flip when you aren't quite completely in your square.
- - [ ] Add flags!
+ - [x] Add flags!
     - [x] Flag starts in the right place
     - [x] Flag is actually displayed
     - [x] Pick up and move a flag
-    - [ ] Signal on score
+    - [x] Signal on score
     - [ ] Have some way to make them drop the flag
     - [x] Move flag so it doesn't get in their face
  - [x] Change setup people are in the right places at the start and anything else is sorted
  - [ ] Add a timer which counts down
- - [ ] Add a score and a tug of war thing
+ - [ ] Add a score
+ - [ ] Add tug of war thing to display score 
  - [ ] Add joystick controls to the game and make this not crash everything (check for player.keys)
  - [ ] Add numbers above players
 
