@@ -10,6 +10,7 @@ local logotween = createTweens({{-300, 70, 1}})
 local chartween = createTweens({{1200, 580, 1}})
 
 function title.draw()
+  love.graphics.setColor(255,255,255)
   love.graphics.draw(logo, valueTween(logotween), 50)
   love.graphics.draw(mainCharacter, valueTween(chartween), 200, 0.25, 0.6, 0.6)
   love.graphics.setFont(mediumFont)

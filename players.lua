@@ -39,9 +39,13 @@ function playerSetup(players, boardData)
   end
 end
 
-function drawPlayer(player)
+function drawPlayer(player,i)
   love.graphics.setColor(player.colour)
   love.graphics.draw(mainCharacter, player.x, player.y, 0, boardData.squareSize * 0.9 / mainCharacter:getHeight(), boardData.squareSize * 0.9 / mainCharacter:getHeight())
+  if player.timer < 0 then
+    love.graphics.setColor(255,255,255)
+  end
+  love.graphics.draw(floatingNumbers[i], player.x + (boardData.squareSize * 0.2) - 5, player.y - 30, 0, 0.35)
 end
 
 function updatePlayer(player, dt)
@@ -111,8 +115,8 @@ function updateAllPlayers(players, dt)
 end
 
 function drawAllPlayers(players)
-  for _,player in pairs(players) do
-    drawPlayer(player)
+  for i,player in pairs(players) do
+    drawPlayer(player,i)
   end
 end
 

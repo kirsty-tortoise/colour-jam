@@ -14,6 +14,10 @@ mediumFont = love.graphics.newFont(18)
 smallFont = love.graphics.newFont(12)
 
 mainCharacter = love.graphics.newImage("art/mainchar.png")
+floatingNumbers = {}
+for i=1,8 do
+  table.insert(floatingNumbers, love.graphics.newImage("art/"..i..".png"))
+end
 gobutton = love.graphics.newImage("art/go.png")
 
 function love.load()
@@ -81,6 +85,7 @@ function love.joystickremoved(j)
 end
 
 function love.joystickpressed(j, b)
+  print("button pressed: ", b)
   if gamestate.joystickpressed then
     gamestate = gamestate.joystickpressed(j, b)
   end

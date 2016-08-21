@@ -27,7 +27,7 @@ function gameover.mousepressed(x, y, button, istouch)
   elseif isOverButton(samePlayersButton, x, y) then
     return teamSelect
   elseif isOverButton(menuButton, x, y) then
-    return menu
+    return title
   end
   return gameover
 end
