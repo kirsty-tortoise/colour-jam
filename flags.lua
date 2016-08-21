@@ -22,16 +22,32 @@ end
 
 function updateFlags(players, flag1, flag2, board, boardData)
   for _,player in pairs(players) do
-    if player.team == 2 and flag1.isDown and player.bx == flag1.bx and player.by == flag1.by then
-      flag1.isDown = false
-      flag1.playerHolding = player
-    elseif player.team == 1 and flag2.isDown and player.bx == flag2.bx and player.by == flag2.by then
-      flag2.isDown = false
-      flag2.playerHolding = player
+    if flag1.isDown and player.bx == flag1.bx and player.by == flag1.by then
+      if player.team == 2 then
+        flag1.isDown = false
+        flag1.playerHolding = player
+        player.flagHolding = flag1
+      elseif player.team == 1 then
+        moveFlagTo(flag1, boardData, flag1.initialBX, flag1.initialBY)
+      end
+    elseif flag2.isDown and player.bx == flag2.bx and player.by == flag2.by then
+      if player.team == 1 then
+        flag2.isDown = false
+        flag2.playerHolding = player
+        player.flagHolding = flag2
+      elseif player.team == 2 then
+        moveFlagTo(flag2, boardData, flag2.initialBX, flag2.initialBY)
+      end
     end
   end
   updateFlag(flag1, board, boardData)
   updateFlag(flag2, board, boardData)
+end
+
+function dropFlag(flag, bx, by)
+  moveFlagTo(flag, boardData, bx, by)
+  flag.isDown = true
+  flag.playerHolding = nil
 end
 
 function updateFlag(flag, board, boardData)
