@@ -203,10 +203,12 @@ function gameSetup.mousepressed(mx, my, b, istouch)
           end
         end
       end
-      for k=1, #players do
-        if players[k].keys then print("Player "..k.." using keyboard.")
-        elseif players[k].joystick then print("Player "..k.." using controller.")
-        else print("Player "..k.." is confused.") end
+      if debug then
+        for k=1, #players do
+          if players[k].keys then print("Player "..k.." using keyboard.")
+          elseif players[k].joystick then print("Player "..k.." using controller.")
+          else print("Player "..k.." is confused.") end
+        end
       end
     end
   end
