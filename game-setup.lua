@@ -68,14 +68,16 @@ function gameSetup.draw()
     end
     love.graphics.setFont(mediumFont)
     love.graphics.printf("Flip Mode:\n< "..j.flipMode.." >", x + 15, y + 160, 120, "center")
-    love.graphics.setColor(255,255,255)
-    love.graphics.rectangle("fill", x + 50, y + 225, 100, 20)
-    love.graphics.setColor(0,0,0)
-    love.graphics.setFont(smallFont)
-    if j.keys then
-      love.graphics.print("Controller?", x + 55, y + 225)
-    else
-      love.graphics.print("Keyboard?", x + 55, y + 225)
+    if love.joystick.getJoystickCount() > 0 then
+      love.graphics.setColor(255,255,255)
+      love.graphics.rectangle("fill", x + 50, y + 225, 100, 20)
+      love.graphics.setColor(0,0,0)
+      love.graphics.setFont(smallFont)
+      if j.keys then
+        love.graphics.print("Controller?", x + 55, y + 225)
+      else
+        love.graphics.print("Keyboard?", x + 55, y + 225)
+      end
     end
   end
   love.graphics.setColor(255,255,255)
