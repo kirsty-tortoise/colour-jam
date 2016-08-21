@@ -138,6 +138,40 @@ function joystickpressedAllPlayers(players, j, b)
   end
 end
 
+function joystickUpdateAllPlayers(players)
+  for _,player in pairs(players) do
+    if player.joystick then
+      local x1, x2 = player.joystick:getAxis(1), player.joystick:getAxis(3)
+      local y1, y2 = player.joystick:getAxis(2), player.joystick:getAxis(4)
+      local x, y
+      if math.abs(x1) > math.abs(x2) then x = x1 else x = x2 end
+      if math.abs(y1) > math.abs(y2) then y = y1 else y = y2 end
+      if x < -0.5 then
+        player.left = true
+        player.right = false
+      elseif x > 0.5 then
+        player.left = false
+        player.right = true
+      else
+        player.left = false
+        player.right = false
+      end
+
+      if y < -0.5 then
+        player.up = true
+        player.down = false
+      elseif y > 0.5 then
+        player.up = false
+        player.down = true
+      else
+        player.up = false
+        player.down = false
+      end
+
+    end
+  end
+end
+
 function getBXAndBY(boardData, x, y)
   local bx = math.floor((x - boardData.startX) / boardData.squareSize) + 1
   local by = math.floor((y - boardData.startY) / boardData.squareSize) + 1
