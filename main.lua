@@ -18,6 +18,7 @@ function love.load()
   lastGamestate = gamestate.code
   if gamestate.setup then gamestate.setup() end
   math.randomseed(os.time())
+  print(love.joystick.getJoystickCount())
 end
 
 function love.draw()
