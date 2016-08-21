@@ -19,6 +19,9 @@ function game.update(dt)
   updateAllPlayers(players, dt)
   updateFlags(players, flag1, flag2, board, boardData)
   updateTimer(dt)
+  if isGameOver() then
+    return gameover
+  end
   return game
 end
 
