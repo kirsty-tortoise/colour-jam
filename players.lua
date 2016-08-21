@@ -49,8 +49,8 @@ end
 function drawPlayer(player,i)
   if player.timer < 0 then
     love.graphics.setColor(255,255,255)
-    love.graphics.setLineWidth(4)
-    love.graphics.arc("line", player.x + 0.5 * player.width, player.y + 0.5 * player.height, player.height / 2, 0, - 2 * math.pi * player.timer / cooldown)
+    love.graphics.setLineWidth(3)
+    love.graphics.arc("line", "open", player.x + 0.5 * player.width, player.y + 0.5 * player.height, 0.6 * player.height, - math.pi * 0.5, - 2 * math.pi * player.timer / cooldown - math.pi * 0.5)
     love.graphics.setLineWidth(1)
   end
   love.graphics.setColor(player.colour)

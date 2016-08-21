@@ -40,5 +40,5 @@
  - [ ] Haptic feedback!
 
  ### Weird bugs to fix
- - [ ] Random drawing of white lines
- - [ ] Music only plays for 60 seconds second time around
+ - [x] Random drawing of white lines
+ - [x] Music only plays for 60 seconds second time around
