@@ -53,6 +53,38 @@ function teamSelect.update(dt)
   for i=1, #playerTweens do
     updateTweens(playerTweens[i], dt)
   end
+  for i, j in pairs(players) do
+    if j.joystick then
+      local dir = checkFlick(j.joystick)
+      if dir then
+        if dir == "left" and j.team ~= 1 then
+          if j.team == 2 then
+            j.team = 0
+            playerTweens[i] = createTweens({{305, 0, 0.1}})
+          else
+            if playersOnTeam(1) < #players / 2 then
+              j.team = 1
+              playerTweens[i] = createTweens({{305, 0, 0.1}})
+            else
+              playerTweens[i] = createTweens({{20, 0, 0.05},{0, -20, 0.05},{-20, 20, 0.1},{20, 0, 0.05}})
+            end
+          end
+        elseif dir == "right" and j.team ~= 2 then
+          if j.team == 1 then
+            j.team = 0
+            playerTweens[i] = createTweens({{-305, 0, 0.1}})
+          else
+            if playersOnTeam(2) < #players / 2 then
+              j.team = 2
+              playerTweens[i] = createTweens({{-305, 0, 0.1}})
+            else
+              playerTweens[i] = createTweens({{20, 0, 0.05},{0, -20, 0.05},{-20, 20, 0.1},{20, 0, 0.05}})
+            end
+          end
+        end
+      end
+    end
+  end
   return teamSelect
 end
 
@@ -105,7 +137,6 @@ end
 
 function teamSelect.mousepressed(x, y, b, istouch)
   if b == 1 and (debug or playersOnTeam(0) == 0) then
-    print("Hello :)")
     if x > 365 and x < 448 and y > 510 and y < 573 then
       return game
     end

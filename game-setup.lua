@@ -110,6 +110,18 @@ function rectanglePosition(playernumber)
   return x, y
 end
 
+function gameSetup.update(dt)
+  for i,j in pairs(players) do
+    if j.joystick then
+      local dir = checkFlick(j.joystick)
+      if dir then
+        modifyFlipType(dir, j)
+      end
+    end
+  end
+  return gameSetup
+end
+
 function getUnusedJoystick()
   for i in pairs(defaultjoys) do
     if not defaultjoys[i].used then
@@ -207,18 +219,26 @@ function gameSetup.keypressed(k, sc, ir)
       for i, j in ipairs(players) do
         if j.keys then
           if k == j.keys.left then
-            if j.flipMode == "row" then j.flipMode = "area"
-            elseif j.flipMode == "column" then j.flipMode = "row"
-            else j.flipMode = "column" end
+            modifyFlipType("left",j)
           elseif k == j.keys.right then
-            if j.flipMode == "row" then j.flipMode = "column"
-            elseif j.flipMode == "column" then j.flipMode = "area"
-            else j.flipMode = "row" end
+            modifyFlipType("right",j)
           end
         end
       end
     end
   return gameSetup
+  end
+end
+
+function modifyFlipType(k, j) -- direction, player
+  if k == "left" then
+    if j.flipMode == "row" then j.flipMode = "area"
+    elseif j.flipMode == "column" then j.flipMode = "row"
+    else j.flipMode = "column" end
+  elseif k == "right" then
+    if j.flipMode == "row" then j.flipMode = "column"
+    elseif j.flipMode == "column" then j.flipMode = "area"
+    else j.flipMode = "row" end
   end
 end
 
