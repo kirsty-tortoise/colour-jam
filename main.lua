@@ -15,6 +15,9 @@ largeishFont = love.graphics.newFont(25)
 mediumFont = love.graphics.newFont(18)
 smallFont = love.graphics.newFont(12)
 
+bg = love.audio.newSource("hill2.wav", "stream")
+bgtoloop = love.audio.newSource("hill2clipped.wav", "stream")
+
 mainCharacter = love.graphics.newImage("art/mainchar.png")
 floatingNumbers = {}
 for i=1,8 do
@@ -89,7 +92,6 @@ function love.joystickremoved(j)
 end
 
 function love.joystickpressed(j, b)
-  print("Joystick pressed: ", b)
   if gamestate.joystickpressed then
     gamestate = gamestate.joystickpressed(j, b)
   end

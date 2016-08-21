@@ -4,8 +4,10 @@ board = {}
 boardData = {startX = 0, startY = 0, width = 16, height = 10, squareSize = 50}
 scores = {0, 0}
 local flag1, flag2
+local loopflag = true
 
 function game.setup()
+  love.audio.play(bg)
   board = generateRandomBoard(board, boardData.startX, boardData.startY, boardData.width, boardData.height, boardData.squareSize)
   playerSetup(players, boardData)
   flag1, flag2 = {}, {}
@@ -23,7 +25,17 @@ function game.update(dt)
   updateTimer(dt)
   updateScoreBar(dt)
   if isGameOver() then
+    if bg:isPlaying() then
+      love.audio.stop(bg)
+    else
+      love.audio.stop(bgtoloop)
+    end
     return gameover
+  end
+  if not bg:isPlaying() and loopflag then
+    love.audio.play(bgtoloop)
+    bgtoloop:setLooping(true)
+    loopflag = false
   end
   return game
 end
