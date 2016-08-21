@@ -11,12 +11,14 @@ function game.setup()
   flag1, flag2 = {}, {}
   flagSetup(flag1, flag2, boardData)
   scores = {0, 0}
+  resetTimer()
   return game
 end
 
 function game.update(dt)
   updateAllPlayers(players, dt)
   updateFlags(players, flag1, flag2, board, boardData)
+  updateTimer(dt)
   return game
 end
 
@@ -25,6 +27,7 @@ function game.draw()
   drawAllPlayers(players)
   drawFlag(flag1, boardData)
   drawFlag(flag2, boardData)
+  drawTimer()
   return game
 end
 
