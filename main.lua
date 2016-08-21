@@ -1,4 +1,4 @@
-requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "footer", "gameover", "team-select"}
+requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "timer", "score", "gameover", "team-select"}
 
 for _,j in pairs(requires) do
   require(j)
@@ -6,6 +6,8 @@ end
 
 local gamestate
 local lastGamestate
+
+debug = false
 
 reallyLargeFont = love.graphics.newFont(54)
 largeFont = love.graphics.newFont(36)
