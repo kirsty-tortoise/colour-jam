@@ -43,3 +43,8 @@ end
 function isTweenFinished(t)
   return #t.transitions == 0
 end
+
+function finishTween(t)
+  -- remove transition, so it moves to its final place
+  t.trans = {}
+end

@@ -9,15 +9,18 @@
     - [x] Move flag so it doesn't get in their face
  - [x] Change setup people are in the right places at the start and anything else is sorted
  - [x] Add a timer which counts down
- - [ ] Add a score
- - [ ] Add tug of war thing to display score
+ - [x] Add a score
+ - [x] Add tug of war thing to display score
  - [ ] Add joystick controls to the game and make this not crash everything (check for player.keys)
  - [ ] Add numbers above players
     - [ ] Cooldown represented by colour
  - [ ] Game over screen
+    - [ ] Draw score bar and score at the top
+    - [ ] Display which team won
+    - [ ] Have three option buttons for what to do next
 
 ### Game Setup
- - [ ] Deal with joystick disconnects by de-pairing player and joystick.
+ - [x] Deal with joystick disconnects by de-pairing player and joystick.
  - [ ] Allow players to swap between joystick and keyboard and vice-versa.
 
 ### Slightly crazy stuff if we have a bit more time

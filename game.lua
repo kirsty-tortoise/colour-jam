@@ -12,6 +12,7 @@ function game.setup()
   flagSetup(flag1, flag2, boardData)
   scores = {0, 0}
   resetTimer()
+  setupScoreBar()
   return game
 end
 
@@ -19,6 +20,7 @@ function game.update(dt)
   updateAllPlayers(players, dt)
   updateFlags(players, flag1, flag2, board, boardData)
   updateTimer(dt)
+  updateScoreBar(dt)
   if isGameOver() then
     return gameover
   end
@@ -31,6 +33,7 @@ function game.draw()
   drawFlag(flag1, boardData)
   drawFlag(flag2, boardData)
   drawTimer()
+  drawScore()
   return game
 end
 
