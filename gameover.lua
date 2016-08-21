@@ -6,6 +6,7 @@ local menuButton = {x = 550, y = 300, width = 200, height = 200, text = "Back to
 
 function gameover.setup()
   moveScoreBarToTop()
+  love.audio.play(applause)
   return gameover
 end
 
