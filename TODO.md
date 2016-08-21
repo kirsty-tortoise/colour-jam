@@ -11,13 +11,15 @@
  - [x] Add a timer which counts down
  - [x] Add a score
  - [x] Add tug of war thing to display score
- - [ ] Add joystick controls to the game and make this not crash everything (check for player.keys)
- - [ ] Add numbers above players
-    - [ ] Cooldown represented by colour
+ - [x] Add joystick controls to the game and make this not crash everything (check for player.keys)
+ - [x] Add numbers above players
+    - [x] Cooldown represented by colour
  - [x] Game over screen
     - [x] Draw score bar and score at the top
     - [x] Display which team won
     - [x] Have three option buttons for what to do next
+ - [x] Cooldown arc around players
+ - [ ] Shrink size of players and increase speed
 
 ### Game Setup
  - [x] Deal with joystick disconnects by de-pairing player and joystick.
