@@ -16,6 +16,8 @@ smallFont = love.graphics.newFont(12)
 mainCharacter = love.graphics.newImage("art/mainchar.png")
 gobutton = love.graphics.newImage("art/go.png")
 
+local flickFlags = {}
+
 function love.load()
   gamestate = title
   lastGamestate = gamestate.code
@@ -91,6 +93,36 @@ function love.joystickreleased(j, b)
   if gamestate.joystickreleased then
     gamestate = gamestate.joystickreleased(j, b)
   end
+end
+
+function checkFlick(joystick)
+  if flickFlags[joystick:getID()] then
+    local axisx = joystick:getAxis(1)
+    if math.abs(axisx) < math.abs(joystick:getAxis(3)) then
+      axisx = joystick:getAxis(3)
+    end
+    if axisx > 0.5 then
+      -- Right!
+      flickFlags[joystick:getID()].left = false
+      if not flickFlags[joystick:getID()].right then
+        flickFlags[joystick:getID()].right = true
+        return "right"
+      end
+    elseif axisx < -0.5 then
+      -- Left!
+      flickFlags[joystick:getID()].right = false
+      if not flickFlags[joystick:getID()].left then
+        flickFlags[joystick:getID()].left = true
+        return "left"
+      end
+    else
+      flickFlags[joystick:getID()].right = false
+      flickFlags[joystick:getID()].left = false
+    end
+  else
+    flickFlags[joystick:getID()] = {left=false, right=false}
+  end
+  return false
 end
 
 function love.quit()
