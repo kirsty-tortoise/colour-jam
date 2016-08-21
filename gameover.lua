@@ -1,4 +1,4 @@
-gameover = {}
+gameover = {code = "gameover"}
 
 function gameover.draw()
   love.graphics.setColor(255, 255, 255)

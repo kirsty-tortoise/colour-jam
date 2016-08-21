@@ -1,4 +1,5 @@
 local timer = 0
+local scoreBar = {}
 
 function resetTimer()
   timer = 60
@@ -23,4 +24,40 @@ end
 
 function isGameOver()
   return timer <= 0
+end
+
+function setupScoreBar()
+  scoreBar = {x = 300, y = 525, width = 400, height = 50, lastScore1 = 0, lastScore2 = 0, divide = 200}
+end
+
+function drawScore()
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(largeFont)
+  love.graphics.print(scores[1], 250, 525)
+  love.graphics.print(scores[2], 750, 525)
+  drawScoreBar()
+end
+
+function updateScoreBar(dt)
+  if scoreBar.lastScore1 ~= scores[1] or scoreBar.lastScore2 ~= scores[2] then
+    -- we need to move the divide
+    local divide = scoreBar.width * scores[1] / (scores[1] + scores[2])
+    scoreBar.centreTween = createTweens({{scoreBar.divide, divide, 0.5}})
+    scoreBar.lastScore1, scoreBar.lastScore2 =  scores[1], scores[2]
+  end
+  if scoreBar.centreTween then
+    updateTweens(scoreBar.centreTween, dt)
+    scoreBar.divide = valueTween(scoreBar.centreTween)
+    if isTweenFinished(scoreBar.centreTween) then
+      scoreBar.centreTween = nil
+    end
+  end
+end
+
+function drawScoreBar()
+  -- draw first half
+  love.graphics.setColor(colours[1])
+  love.graphics.rectangle("fill", scoreBar.x, scoreBar.y, scoreBar.divide, scoreBar.height)
+  love.graphics.setColor(colours[2])
+  love.graphics.rectangle("fill", scoreBar.x + scoreBar.divide, scoreBar.y, scoreBar.width - scoreBar.divide, scoreBar.height)
 end
