@@ -68,6 +68,9 @@ function updatePlayer(player, dt)
       player.flagHolding = nil
     end
     movePlayerTo(player, boardData, player.initialBX, player.initialBY)
+  elseif not canPlayerMove(player, board, boardData) then
+    -- they are in the right square, but slightly stuck
+    movePlayerTo(player, boardData, player.bx, player.by)
   end
 
   local newX, newY = player.x, player.y
@@ -99,7 +102,6 @@ function processKeypressPlayer(player, key)
       player.right = true
     elseif key == player.keys.flip and player.timer >= 0 then
       flipBoard(player.flipMode, board, player.bx, player.by)
-      movePlayerTo(player, boardData, player.bx, player.by)
       player.timer = -cooldown
     end
   end
@@ -122,7 +124,6 @@ end
 function processJoystickpressPlayer(player, j, b)
   if player.joystick and b == player.buttonid and player.joystick:getID() == j:getID() then
     flipBoard(player.flipMode, board, player.bx, player.by)
-    movePlayerTo(player, boardData, player.bx, player.by)
     player.timer = -1
   end
 end
@@ -203,6 +204,17 @@ end
 
 function getOtherSide(player, x, y)
   return x + player.width, y + player.height
+end
+
+function canPlayerMove(player, board, boardData)
+  local otherX, otherY = getOtherSide(player, player.x, player.y)
+  local bx1,by1 = getBXAndBY(boardData, player.x, player.y)
+  local bx2,by2 = getBXAndBY(boardData, otherX, otherY)
+
+  return checkPosition(player, board, bx1, by1)
+     and checkPosition(player, board, bx1, by2)
+     and checkPosition(player, board, bx2, by1)
+     and checkPosition(player, board, bx2, by2)
 end
 
 function movePlayerIfCan(player, newX, newY, board, boardData)

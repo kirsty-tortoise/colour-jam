@@ -20,7 +20,7 @@
     - [x] Have three option buttons for what to do next
  - [x] Cooldown arc around players
  - [x] Shrink size of players and increase speed
- - [ ] Not quite getting stuck thing if between squares
+ - [x] Not quite getting stuck thing if between squares
 
 ### Game Setup
  - [x] Deal with joystick disconnects by de-pairing player and joystick.
