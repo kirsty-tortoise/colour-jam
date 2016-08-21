@@ -20,19 +20,18 @@
     - [x] Have three option buttons for what to do next
  - [x] Cooldown arc around players
  - [x] Shrink size of players and increase speed
+ - [x] Not quite getting stuck thing if between squares
 
 ### Game Setup
  - [x] Deal with joystick disconnects by de-pairing player and joystick.
  - [x] Allow players to swap between joystick and keyboard and vice-versa.
 
 ### Slightly crazy stuff if we have a bit more time
- - [ ] Changing teams if a square you are on is swapped
  - [ ] Barriers
  - [ ] Level editor
  - [ ] Built in grids
  - [ ] Animations of flipping and stuff
- - [ ] Time limit to get the flag back to your base
- - [ ] Music and sound effects
+ - [x] Music and sound effects
  - [ ] Edit README so people could actually set it up and run it
 
 ### Extra crazy stuff for if we somehow have lots of time
