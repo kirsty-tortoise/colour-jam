@@ -19,7 +19,7 @@
     - [x] Display which team won
     - [x] Have three option buttons for what to do next
  - [x] Cooldown arc around players
- - [ ] Shrink size of players and increase speed
+ - [x] Shrink size of players and increase speed
 
 ### Game Setup
  - [x] Deal with joystick disconnects by de-pairing player and joystick.
