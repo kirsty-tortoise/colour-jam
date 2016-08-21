@@ -65,18 +65,20 @@ function updatePlayer(player, dt)
 end
 
 function processKeypressPlayer(player, key)
-  if key == player.keys.up then
-    player.up = true
-  elseif key == player.keys.down then
-    player.down = true
-  elseif key == player.keys.left then
-    player.left = true
-  elseif key == player.keys.right then
-    player.right = true
-  elseif key == player.keys.flip and player.timer >= 0 then
-    flipBoard(player.flipMode, board, player.bx, player.by)
-    movePlayerTo(player, boardData, player.bx, player.by)
-    player.timer = -1
+  if player.keys then
+    if key == player.keys.up then
+      player.up = true
+    elseif key == player.keys.down then
+      player.down = true
+    elseif key == player.keys.left then
+      player.left = true
+    elseif key == player.keys.right then
+      player.right = true
+    elseif key == player.keys.flip and player.timer >= 0 then
+      flipBoard(player.flipMode, board, player.bx, player.by)
+      movePlayerTo(player, boardData, player.bx, player.by)
+      player.timer = -1
+    end
   end
 end
 
