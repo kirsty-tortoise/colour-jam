@@ -7,7 +7,9 @@ end
 local gamestate
 local lastGamestate
 
+reallyLargeFont = love.graphics.newFont(54)
 largeFont = love.graphics.newFont(36)
+largeishFont = love.graphics.newFont(25)
 mediumFont = love.graphics.newFont(18)
 smallFont = love.graphics.newFont(12)
 
@@ -44,6 +46,12 @@ end
 function love.mousepressed(x, y, button, istouch)
   if gamestate.mousepressed then
     gamestate = gamestate.mousepressed(x, y, button, istouch)
+  end
+end
+
+function love.mousemoved(x, y, dx, dy, istouch)
+  if gamestate.mousemoved then
+    gamestate = gamestate.mousemoved(x, y, dx, dy, istouch)
   end
 end
 

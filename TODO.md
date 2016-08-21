@@ -14,10 +14,10 @@
  - [ ] Add joystick controls to the game and make this not crash everything (check for player.keys)
  - [ ] Add numbers above players
     - [ ] Cooldown represented by colour
- - [ ] Game over screen
-    - [ ] Draw score bar and score at the top
-    - [ ] Display which team won
-    - [ ] Have three option buttons for what to do next
+ - [x] Game over screen
+    - [x] Draw score bar and score at the top
+    - [x] Display which team won
+    - [x] Have three option buttons for what to do next
 
 ### Game Setup
  - [x] Deal with joystick disconnects by de-pairing player and joystick.

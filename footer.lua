@@ -2,7 +2,7 @@ local timer = 0
 local scoreBar = {}
 
 function resetTimer()
-  timer = 60
+  timer = 5
 end
 
 function updateTimer(dt)
