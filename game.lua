@@ -27,6 +27,10 @@ function game.update(dt)
   return game
 end
 
+function game.joystickpressed(j, b)
+  joystickpressedAllPlayers(players, j, b)
+end
+
 function game.draw()
   drawBoard(board)
   drawAllPlayers(players)

@@ -81,14 +81,24 @@ function processKeypressPlayer(player, key)
 end
 
 function processKeyreleasePlayer(player, key)
-  if key == player.keys.up then
-    player.up = false
-  elseif key == player.keys.down then
-    player.down = false
-  elseif key == player.keys.left then
-    player.left = false
-  elseif key == player.keys.right then
-    player.right = false
+  if player.keys then
+    if key == player.keys.up then
+      player.up = false
+    elseif key == player.keys.down then
+      player.down = false
+    elseif key == player.keys.left then
+      player.left = false
+    elseif key == player.keys.right then
+      player.right = false
+    end
+  end
+end
+
+function processJoystickpressPlayer(player, j, b)
+  if player.joystick and b == player.buttonid and player.joystick:getID() == j:getID() then
+    flipBoard(player.flipMode, board, player.bx, player.by)
+    movePlayerTo(player, boardData, player.bx, player.by)
+    player.timer = -1
   end
 end
 
@@ -113,6 +123,12 @@ end
 function keyreleaseAllPlayers(players, key)
   for _,player in pairs(players) do
     processKeyreleasePlayer(player, key)
+  end
+end
+
+function joystickpressedAllPlayers(players, j, b)
+  for _, player in pairs(players) do
+    processJoystickpressPlayer(player, j, b)
   end
 end
 
