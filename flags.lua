@@ -55,6 +55,7 @@ function updateFlag(flag, board, boardData)
     flag.x, flag.y = flag.playerHolding.x + 0.4 * boardData.squareSize, flag.playerHolding.y - 0.1 * boardData.squareSize
     flag.bx, flag.by = getBXAndBY(boardData, flag.playerHolding.x, flag.playerHolding.y)
     if isFlagBack(flag, board) then
+      love.audio.play(applause)
       scores[3 - flag.team] = scores[3 - flag.team] + 1
       moveFlagTo(flag, boardData, flag.initialBX, flag.initialBY)
       flag.isDown = true

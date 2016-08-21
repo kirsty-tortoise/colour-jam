@@ -17,6 +17,7 @@ smallFont = love.graphics.newFont(12)
 
 bg = love.audio.newSource("hill2.wav", "stream")
 bgtoloop = love.audio.newSource("hill2clipped.wav", "stream")
+applause = love.audio.newSource("applause.wav", "static")
 
 mainCharacter = love.graphics.newImage("art/mainchar.png")
 floatingNumbers = {}
