@@ -15,9 +15,12 @@
  - [ ] Add numbers above players
     - [ ] Cooldown represented by colour
  - [ ] Game over screen
+    - [ ] Draw score bar and score at the top
+    - [ ] Display which team won
+    - [ ] Have three option buttons for what to do next
 
 ### Game Setup
- - [ ] Deal with joystick disconnects by de-pairing player and joystick.
+ - [x] Deal with joystick disconnects by de-pairing player and joystick.
  - [ ] Allow players to swap between joystick and keyboard and vice-versa.
 
 ### Slightly crazy stuff if we have a bit more time

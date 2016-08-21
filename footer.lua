@@ -61,3 +61,22 @@ function drawScoreBar()
   love.graphics.setColor(colours[2])
   love.graphics.rectangle("fill", scoreBar.x + scoreBar.divide, scoreBar.y, scoreBar.width - scoreBar.divide, scoreBar.height)
 end
+
+function moveScoreBarToTop()
+  scoreBar.x = 100
+  scoreBar.width = 600
+  scoreBar.y = 20
+  if scores[1] == 0 and scores[2] == 0 then
+    scoreBar.divide = scoreBar.width / 2
+  else
+    scoreBar.divide = scoreBar.width * scores[1] / (scores[1] + scores[2])
+  end
+end
+
+function drawScoreInGameover()
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(largeFont)
+  love.graphics.print(scores[1], 50, 25)
+  love.graphics.print(scores[2], 730, 25)
+  drawScoreBar()
+end
