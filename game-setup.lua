@@ -4,7 +4,6 @@ players = {}
 local defaultkeys = {{keys={up="up", down="down", left="left", right="right", flip="space"}, used=false}, {keys={up="w", down="s", left="a", right="d", flip="e"}, used=false}, {keys={up="t", down="g", left="f", right="h", flip="y"}, used=false}, {keys={up="i", down="k", left="j", right="l", flip="o"}, used=false}}
 local defaultjoys = {}
 local addplayer = love.graphics.newImage("art/addplayer.png")
-local gobutton = love.graphics.newImage("art/go.png")
 local mustSpecifyJoyButton = {}
 
 function gameSetup.setup()
@@ -151,7 +150,7 @@ function gameSetup.mousepressed(mx, my, b, istouch)
         end
       end
     elseif mx > 720 and mx < 720 + (gobutton:getHeight() * 0.3) and my > 540 and my < 540 + (gobutton:getWidth() * 0.3) then
-      return game
+      return teamSelect
     else
       -- Check for controls swap!
       for k=1, #players do
@@ -203,7 +202,7 @@ end
 function gameSetup.keypressed(k, sc, ir)
   if #mustSpecifyJoyButton == 0 then
     if k == "return" then
-      return game
+      return teamSelect
     else
       for i, j in ipairs(players) do
         if j.keys then

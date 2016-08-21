@@ -1,4 +1,4 @@
-requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "footer", "gameover"}
+requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "footer", "gameover", "team-select"}
 
 for _,j in pairs(requires) do
   require(j)
@@ -12,6 +12,7 @@ mediumFont = love.graphics.newFont(18)
 smallFont = love.graphics.newFont(12)
 
 mainCharacter = love.graphics.newImage("art/mainchar.png")
+gobutton = love.graphics.newImage("art/go.png")
 
 function love.load()
   gamestate = title
