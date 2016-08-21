@@ -39,3 +39,7 @@ end
 function title.keypressed(blah, blahh, blahhh)
   return gameSetup
 end
+
+function title.joystickpressed(blah, blahh)
+  return gameSetup
+end
