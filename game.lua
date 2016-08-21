@@ -17,6 +17,7 @@ function game.setup()
 end
 
 function game.update(dt)
+  joystickUpdateAllPlayers(players)
   updateAllPlayers(players, dt)
   updateFlags(players, flag1, flag2, board, boardData)
   updateTimer(dt)
@@ -29,6 +30,7 @@ end
 
 function game.joystickpressed(j, b)
   joystickpressedAllPlayers(players, j, b)
+  return game
 end
 
 function game.draw()

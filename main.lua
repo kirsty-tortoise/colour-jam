@@ -81,6 +81,7 @@ function love.joystickremoved(j)
 end
 
 function love.joystickpressed(j, b)
+  print("Joystick pressed: ", b)
   if gamestate.joystickpressed then
     gamestate = gamestate.joystickpressed(j, b)
   end

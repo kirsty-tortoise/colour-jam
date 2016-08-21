@@ -1,6 +1,7 @@
 teamSelect = {code="team-select"}
 local playerTweens = {}
 local bg = love.graphics.newImage("art/teambg.png")
+local debug = true
 
 function teamSelect.setup()
   for i=1, #players do
@@ -40,7 +41,7 @@ function teamSelect.draw()
       love.graphics.draw(mainCharacter, 605+valueTween(playerTweens[i]), (20 * i) + (50 * (i-1)) - 10, -0.25, 0.1)
     end
   end
-  if playersOnTeam(0) == 0 then
+  if debug or playersOnTeam(0) == 0 then
     -- READY TO GO!
     love.graphics.setColor(0,0,0)
     love.graphics.draw(gobutton, 365, 510, 0, 0.3)
@@ -102,8 +103,9 @@ function teamSelect.keypressed(k, sc, ir)
   return teamSelect
 end
 
-function teamSelect.mousepressed(b, x, y)
-  if b == 1 and playersOnTeam(0) == 0 then
+function teamSelect.mousepressed(x, y, b, istouch)
+  if b == 1 and (debug or playersOnTeam(0) == 0) then
+    print("Hello :)")
     if x > 365 and x < 448 and y > 510 and y < 573 then
       return game
     end
