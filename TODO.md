@@ -30,9 +30,9 @@
  - [ ] Barriers
  - [ ] Level editor
  - [ ] Built in grids
- - [ ] Animations of flipping and stuff
+ - [x] Animations of flipping and stuff
  - [x] Music and sound effects
- - [ ] Edit README so people could actually set it up and run it
+ - [x] Edit README so people could actually set it up and run it
 
 ### Extra crazy stuff for if we somehow have lots of time
  - [ ] AIs so you can play by yourself
