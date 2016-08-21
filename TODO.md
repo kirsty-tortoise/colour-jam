@@ -38,3 +38,7 @@
  - [ ] AIs so you can play by yourself
  - [ ] Possibility to play over the Internet if there aren't lots of people at your house
  - [ ] Haptic feedback!
+
+ ### Weird bugs to fix
+ - [ ] Random drawing of white lines
+ - [ ] Music only plays for 60 seconds second time around

@@ -8,6 +8,7 @@ local loopflag = true
 
 function game.setup()
   love.audio.play(bg)
+  loopflag = true
   board = generateRandomBoard(board, boardData.startX, boardData.startY, boardData.width, boardData.height, boardData.squareSize)
   playerSetup(players, boardData)
   flag1, flag2 = {}, {}
