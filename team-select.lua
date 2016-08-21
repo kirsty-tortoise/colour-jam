@@ -1,7 +1,6 @@
 teamSelect = {code="team-select"}
 local playerTweens = {}
 local bg = love.graphics.newImage("art/teambg.png")
-local debug = true
 
 function teamSelect.setup()
   for i=1, #players do
