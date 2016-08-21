@@ -5,7 +5,7 @@
     - [x] Flag is actually displayed
     - [x] Pick up and move a flag
     - [x] Signal on score
-    - [ ] Have some way to make them drop the flag
+    - [x] Have some way to make them drop the flag
     - [x] Move flag so it doesn't get in their face
  - [x] Change setup people are in the right places at the start and anything else is sorted
  - [x] Add a timer which counts down
@@ -33,6 +33,7 @@
  - [ ] Animations of flipping and stuff
  - [ ] Time limit to get the flag back to your base
  - [ ] Music and sound effects
+ - [ ] Edit README so people could actually set it up and run it
 
 ### Extra crazy stuff for if we somehow have lots of time
  - [ ] AIs so you can play by yourself

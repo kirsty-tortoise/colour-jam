@@ -38,6 +38,7 @@ function playerSetup(players, boardData)
       bx, by = getStartingPosition(2, team2Count, boardData)
     end
     movePlayerTo(player, boardData, bx, by)
+    player.initialBX, player.initialBY = bx, by
 
     -- Final player stuff
     player.speed = 100.0
@@ -59,6 +60,15 @@ end
 
 function updatePlayer(player, dt)
   player.timer = player.timer + dt
+
+  -- check if they have somehow become stuck
+  if not checkPosition(player, board, player.bx, player.by) then
+    if player.flagHolding then
+      dropFlag(player.flagHolding, player.bx, player.by)
+      player.flagHolding = nil
+    end
+    movePlayerTo(player, boardData, player.initialBX, player.initialBY)
+  end
 
   local newX, newY = player.x, player.y
   if player.up then
