@@ -3,11 +3,16 @@ title = {code="title"}
 require "tween"
 
 local logo = love.graphics.newImage("art/logo.png")
-local isdisplayed = false
-local isflashing = false
-local totaldt = 0
-local logotween = createTweens({{-300, 70, 1}})
-local chartween = createTweens({{1200, 580, 1}})
+local isdisplayed, isflashing, totaldt, logotween, chartween
+
+function title.setup()
+  logo = love.graphics.newImage("art/logo.png")
+  isdisplayed = false
+  isflashing = false
+  totaldt = 0
+  logotween = createTweens({{-300, 70, 1}})
+  chartween = createTweens({{1200, 580, 1}})
+end
 
 function title.draw()
   love.graphics.setColor(255,255,255)
