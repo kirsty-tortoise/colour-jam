@@ -73,7 +73,11 @@ function gameSetup.draw()
     love.graphics.rectangle("fill", x + 50, y + 225, 100, 20)
     love.graphics.setColor(0,0,0)
     love.graphics.setFont(smallFont)
-    love.graphics.print("Controller?", x + 50, y + 225) -- TODO: implement other way
+    if j.keys then
+      love.graphics.print("Controller?", x + 55, y + 225)
+    else
+      love.graphics.print("Keyboard?", x + 55, y + 225)
+    end
   end
   love.graphics.setColor(255,255,255)
   if #players < 4 + love.joystick.getJoystickCount() then
@@ -107,31 +111,37 @@ function rectanglePosition(playernumber)
   return x, y
 end
 
+function getUnusedJoystick()
+  for i in pairs(defaultjoys) do
+    if not defaultjoys[i].used then
+      return i
+    end
+  end
+  return 0
+end
+
+function getUnusedKeymap()
+  for i in pairs(defaultkeys) do
+    if not defaultkeys[i].used then
+      return i
+    end
+  end
+  return 0
+end
+
 function gameSetup.mousepressed(mx, my, b, istouch)
   if b == 1 and #mustSpecifyJoyButton == 0 then
     local x, y = rectanglePosition(#players + 1)
     local h, w = addplayer:getHeight() * 0.4, addplayer:getWidth() * 0.4
     if mx > x - 2 and mx < x - 2 + w and my > y + 10 and my < y + 10 + h then
       -- First try to add a joystick:
-      local joystickfree = 0
-      for i in pairs(defaultjoys) do
-        if not defaultjoys[i].used then
-          joystickfree = i
-          break
-        end
-      end
+      local joystickfree = getUnusedJoystick()
       if joystickfree > 0 then
         table.insert(players, {flipMode = "row", joystick = defaultjoys[joystickfree].joystick, buttonid = 0, team = 0})
         defaultjoys[joystickfree].used = true
         table.insert(mustSpecifyJoyButton, {players[#players].joystick:getID(), #players})
       else
-        local keyboardfree = 0
-        for i in pairs(defaultkeys) do
-          if not defaultkeys[i].used then
-            keyboardfree = i
-            break
-          end
-        end
+        local keyboardfree = getUnusedKeymap()
         if keyboardfree > 0 then
           table.insert(players, {flipMode = "row", keys = defaultkeys[keyboardfree].keys, team = 0})
           defaultkeys[keyboardfree].used = true
@@ -142,34 +152,85 @@ function gameSetup.mousepressed(mx, my, b, istouch)
       end
     elseif mx > 720 and mx < 720 + (gobutton:getHeight() * 0.3) and my > 540 and my < 540 + (gobutton:getWidth() * 0.3) then
       return game
-    end
-  end
-  return gameSetup
-end
-
-function gameSetup.keypressed(k, sc, ir)
-  for i, j in ipairs(players) do
-    if j.keys then
-      if k == j.keys.left then
-        if j.flipMode == "row" then j.flipMode = "area"
-        elseif j.flipMode == "column" then j.flipMode = "row"
-        else j.flipMode = "column" end
-      elseif k == j.keys.right then
-        if j.flipMode == "row" then j.flipMode = "column"
-        elseif j.flipMode == "column" then j.flipMode = "area"
-        else j.flipMode = "row" end
+    else
+      -- Check for controls swap!
+      for k=1, #players do
+        local x, y = rectanglePosition(k)
+        if mx > x + 50 and mx < x + 150 and my > y + 225 and my < y + 245 then
+          if players[k].keys then
+            for i in pairs(defaultkeys) do
+              if players[k].keys.up == defaultkeys[i].keys.up then
+                print("Player "..k.." changing to joystick.")
+                local joystickfree = getUnusedJoystick()
+                if joystickfree > 0 then
+                  defaultkeys[i].used = false
+                  players[k].keys = nil
+                  players[k].joystick = defaultjoys[joystickfree].joystick
+                  players[k].buttonid = 0
+                  defaultjoys[joystickfree].used = true
+                  table.insert(mustSpecifyJoyButton, {defaultjoys[joystickfree].joystick:getID(), k})
+                  break
+                end
+              end
+            end
+          else
+            for i in pairs(defaultjoys) do
+              if defaultjoys[i].joystick:getID() == players[k].joystick:getID() then
+                local keyboardfree = getUnusedKeymap()
+                if keyboardfree > 0 then
+                  defaultjoys[i].used = false
+                  players[k].joystick = nil
+                  players[k].buttonid = nil
+                  players[k].keys = defaultkeys[keyboardfree].keys
+                  defaultkeys[keyboardfree].used = true
+                  break
+                end
+              end
+            end
+          end
+        end
+      end
+      for k=1, #players do
+        if players[k].keys then print("Player "..k.." using keyboard.")
+        elseif players[k].joystick then print("Player "..k.." using controller.")
+        else print("Player "..k.." is confused.") end
       end
     end
   end
   return gameSetup
 end
 
+function gameSetup.keypressed(k, sc, ir)
+  if #mustSpecifyJoyButton == 0 then
+    if k == "return" then
+      return game
+    else
+      for i, j in ipairs(players) do
+        if j.keys then
+          if k == j.keys.left then
+            if j.flipMode == "row" then j.flipMode = "area"
+            elseif j.flipMode == "column" then j.flipMode = "row"
+            else j.flipMode = "column" end
+          elseif k == j.keys.right then
+            if j.flipMode == "row" then j.flipMode = "column"
+            elseif j.flipMode == "column" then j.flipMode = "area"
+            else j.flipMode = "row" end
+          end
+        end
+      end
+    end
+  return gameSetup
+  end
+end
+
 function gameSetup.joystickadded(j)
+  console.log("Joystick added!")
   table.insert(defaultjoys, {joystick = j, used = false})
   return gameSetup
 end
 
 function gameSetup.joystickremoved(j)
+  console.log("Joystick removed...")
   local eyedee = j:getID()
   local removedindex = 0
   for i in pairs(defaultjoys) do
