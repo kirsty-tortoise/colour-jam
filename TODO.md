@@ -33,11 +33,12 @@
  - [x] Animations of flipping and stuff
  - [x] Music and sound effects
  - [x] Edit README so people could actually set it up and run it
+ - [ ] Haptic feedback! Maybe when controllers need to press at the start.
+ - [ ] Make the game resizable
 
 ### Extra crazy stuff for if we somehow have lots of time
  - [ ] AIs so you can play by yourself
  - [ ] Possibility to play over the Internet if there aren't lots of people at your house
- - [ ] Haptic feedback!
 
  ### Weird bugs to fix
  - [x] Random drawing of white lines

@@ -72,19 +72,13 @@ function flipBoard(mode, board, bx, by)
   if mode == "column" then
     for i = 1,boardData.height do
       if by ~= i then
-        if board[bx][i].shrink then
-          board[bx][i].colourIndex = 3 - board[bx][i].colourIndex
-        end
-        board[bx][i].shrink = createTweens({{0,boardData.squareSize/2,0.1}})
+        flipSquare(board[bx][i], boardData)
       end
     end
   elseif mode == "row" then
     for j = 1,boardData.width do
       if bx ~= j then
-        if board[j][by].shrink then
-          board[j][by].colourIndex = 3 - board[j][by].colourIndex
-        end
-        board[j][by].shrink = createTweens({{0,boardData.squareSize/2,0.1}})
+        flipSquare(board[j][by], boardData)
       end
     end
   elseif mode == "area" then
@@ -92,12 +86,16 @@ function flipBoard(mode, board, bx, by)
       for j = 1,boardData.height do
         distance = math.abs(i - bx) + math.abs(j - by)
         if distance ~= 0 and distance <= 2 then
-          if board[i][j].shrink then
-            board[i][j].colourIndex = 3 - board[i][j].colourIndex
-          end
-          board[i][j].shrink = createTweens({{0,boardData.squareSize/2,0.1}})
+          flipSquare(board[i][j], boardData)
         end
       end
     end
   end
+end
+
+function flipSquare(square, boardData)
+  if square.shrink then
+    square.colourIndex = 3 - square.colourIndex
+  end
+  square.shrink = createTweens({{0,boardData.squareSize/2,0.1}})
 end
