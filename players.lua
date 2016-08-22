@@ -43,6 +43,9 @@ function playerSetup(players, boardData)
     -- Final player stuff
     player.speed = 100.0
     player.timer = 0
+
+    -- set up, down, left and right to false, so they don't move at start
+    player.up, player.down, player.left, player.right = false, false, false, false
   end
 end
 
