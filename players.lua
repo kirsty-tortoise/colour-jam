@@ -1,16 +1,19 @@
 local cooldown = 0.5
 
-function getStartingPosition(playerTeam, playerNum, boardData)
-  local positions = {{1, 1}, {1, 3}, {3, 1}, {3, 3}}
+function getStartingPosition(playerTeam, playerNum, level)
+  local positions = {{0, 0}, {0, 2}, {2, 0}, {2, 2}}
+  local boardData = level.boardData
   if playerTeam == 1 then
-    return positions[playerNum][1], positions[playerNum][2]
+    return boardData.base1BX +  positions[playerNum][1],
+           boardData.base1BY + positions[playerNum][2]
   else
-    return boardData.width + 1 -  positions[playerNum][1],
-           boardData.height + 1 - positions[playerNum][2]
+    return boardData.base2BX +  positions[playerNum][1],
+           boardData.base2BY + positions[playerNum][2]
   end
 end
 
-function playerSetup(players, boardData)
+function playerSetup(players, level)
+  local boardData = level.boardData
   local team1Count = 0
   local team2Count = 0
   for i,player in pairs(players) do
@@ -32,12 +35,12 @@ function playerSetup(players, boardData)
     local bx, by
     if player.team == 1 then
       team1Count = team1Count + 1
-      bx, by = getStartingPosition(1, team1Count, boardData)
+      bx, by = getStartingPosition(1, team1Count, level)
     else
       team2Count = team2Count + 1
-      bx, by = getStartingPosition(2, team2Count, boardData)
+      bx, by = getStartingPosition(2, team2Count, level)
     end
-    movePlayerTo(player, boardData, bx, by)
+    movePlayerTo(player, bx, by, level)
     player.initialBX, player.initialBY = bx, by
 
     -- Final player stuff
@@ -61,18 +64,18 @@ function drawPlayer(player,i)
   love.graphics.draw(floatingNumbers[i], player.x + 0.25 * player.width, player.y - 0.7 * player.height, 0, 0.25)
 end
 
-function updatePlayer(player, dt)
+function updatePlayer(player, dt, level)
   player.timer = player.timer + dt
 
   -- check if they have somehow become stuck
-  if not checkPosition(player, board, player.bx, player.by) then
+  if not checkPosition(player, player.bx, player.by, level) then
     if player.flagHolding then
-      dropFlag(player.flagHolding, player.bx, player.by)
+      dropFlag(player.flagHolding, player.bx, player.by, level)
     end
-    movePlayerTo(player, boardData, player.initialBX, player.initialBY)
-  elseif not canPlayerMove(player, board, boardData) then
+    movePlayerTo(player, player.initialBX, player.initialBY, level)
+  elseif not canPlayerMove(player, level) then
     -- they are in the right square, but slightly stuck
-    movePlayerTo(player, boardData, player.bx, player.by)
+    movePlayerTo(player, player.bx, player.by, level)
   end
 
   local newX, newY = player.x, player.y
@@ -89,10 +92,10 @@ function updatePlayer(player, dt)
     newX = player.x + player.speed * dt
   end
 
-  movePlayerIfCan(player, newX, newY, board, boardData)
+  movePlayerIfCan(player, newX, newY, level)
 end
 
-function processKeypressPlayer(player, key)
+function processKeypressPlayer(player, key, level)
   if player.keys then
     if key == player.keys.up then
       player.up = true
@@ -103,7 +106,7 @@ function processKeypressPlayer(player, key)
     elseif key == player.keys.right then
       player.right = true
     elseif key == player.keys.flip and player.timer >= 0 then
-      flipBoard(player.flipMode, board, player.bx, player.by)
+      flipBoard(player.flipMode, player.bx, player.by, level)
       player.timer = -cooldown
     end
   end
@@ -123,16 +126,16 @@ function processKeyreleasePlayer(player, key)
   end
 end
 
-function processJoystickpressPlayer(player, j, b)
+function processJoystickpressPlayer(player, j, b, level)
   if player.joystick and b == player.buttonid and player.joystick:getID() == j:getID() then
-    flipBoard(player.flipMode, board, player.bx, player.by)
+    flipBoard(player.flipMode, player.bx, player.by, level)
     player.timer = -1
   end
 end
 
-function updateAllPlayers(players, dt)
+function updateAllPlayers(players, dt, level)
   for _,player in pairs(players) do
-    updatePlayer(player, dt)
+    updatePlayer(player, dt, level)
   end
 end
 
@@ -142,9 +145,9 @@ function drawAllPlayers(players)
   end
 end
 
-function keypressAllPlayers(players, key)
+function keypressAllPlayers(players, key, level)
   for _,player in pairs(players) do
-    processKeypressPlayer(player, key)
+    processKeypressPlayer(player, key, level)
   end
 end
 
@@ -154,9 +157,9 @@ function keyreleaseAllPlayers(players, key)
   end
 end
 
-function joystickpressedAllPlayers(players, j, b)
+function joystickpressedAllPlayers(players, j, b, level)
   for _, player in pairs(players) do
-    processJoystickpressPlayer(player, j, b)
+    processJoystickpressPlayer(player, j, b, level)
   end
 end
 
@@ -202,38 +205,41 @@ function getOtherSide(player, x, y)
   return x + player.width, y + player.height
 end
 
-function canPlayerMove(player, board, boardData)
+function canPlayerMove(player, level)
+  local board, boardData = level.board, level.boardData
   local otherX, otherY = getOtherSide(player, player.x, player.y)
-  local bx1,by1 = getBXAndBY(boardData, player.x, player.y)
-  local bx2,by2 = getBXAndBY(boardData, otherX, otherY)
+  local bx1,by1 = getBXAndBY(player.x, player.y, level)
+  local bx2,by2 = getBXAndBY(otherX, otherY, level)
 
-  return checkPosition(player, board, bx1, by1)
-     and checkPosition(player, board, bx1, by2)
-     and checkPosition(player, board, bx2, by1)
-     and checkPosition(player, board, bx2, by2)
+  return checkPosition(player, bx1, by1, level)
+     and checkPosition(player, bx1, by2, level)
+     and checkPosition(player, bx2, by1, level)
+     and checkPosition(player, bx2, by2, level)
 end
 
-function movePlayerIfCan(player, newX, newY, board, boardData)
+function movePlayerIfCan(player, newX, newY, level)
+  local board, boardData = level.board, level.boardData
   local otherX, otherY = getOtherSide(player, newX, newY)
-  local bx1,by1 = getBXAndBY(boardData, newX, newY)
-  local bx2,by2 = getBXAndBY(boardData, otherX, otherY)
-  local bx, by = getBXAndBY(boardData, getMidPosition(player, newX, newY))
+  local bx1,by1 = getBXAndBY(newX, newY, level)
+  local bx2,by2 = getBXAndBY(otherX, otherY, level)
+  local midX, midY = getMidPosition(player, newX, newY)
+  local bx, by = getBXAndBY(midX, midY, level)
 
-  print(bx1,by1,bx2,by2)
-  if onBoard(boardData, newX, newY, otherX, otherY)
-     and checkPosition(player, board, bx1, by1)
-     and checkPosition(player, board, bx1, by2)
-     and checkPosition(player, board, bx2, by1)
-     and checkPosition(player, board, bx2, by2) then
+  if onBoard(newX, newY, otherX, otherY, level)
+     and checkPosition(player, bx1, by1, level)
+     and checkPosition(player, bx1, by2, level)
+     and checkPosition(player, bx2, by1, level)
+     and checkPosition(player, bx2, by2, level) then
     player.x, player.y, player.bx, player.by = newX, newY, bx, by
   end
 end
 
-function checkPosition(player, board, bx, by)
-  return board[bx][by].teamBase or player.team == board[bx][by].colourIndex
+function checkPosition(player, bx, by, level)
+  return level.board[bx][by].teamBase or player.team == level.board[bx][by].colourIndex
 end
 
-function movePlayerTo(object, boardData, bx, by)
+function movePlayerTo(object, bx, by, level)
+  local boardData = level.boardData
   object.bx, object.by = bx, by
   object.x = boardData.startX + boardData.squareSize * (bx - 0.8)
   object.y = boardData.startY + boardData.squareSize * (by - 1)

@@ -1,7 +1,8 @@
 game = {code="game"}
 
-board = {}
-boardData = {startX = 0, startY = 0, width = 16, height = 10, squareSize = 50}
+local level
+-- board = {}
+-- boardData = {startX = 0, startY = 0, width = 16, height = 10, squareSize = 50}
 scores = {0, 0}
 local flag1, flag2
 local loopflag = true
@@ -9,10 +10,10 @@ local loopflag = true
 function game.setup()
   love.audio.play(bg)
   loopflag = true
-  board = generateRandomBoard(board, boardData.startX, boardData.startY, boardData.width, boardData.height, boardData.squareSize)
-  playerSetup(players, boardData)
+  level = generateRandomBoard(0, 0, 16, 10, 50)
+  playerSetup(players, level)
   flag1, flag2 = {}, {}
-  flagSetup(flag1, flag2, boardData)
+  flagSetup(flag1, flag2, level)
   scores = {0, 0}
   resetTimer()
   setupScoreBar()
@@ -21,9 +22,9 @@ end
 
 function game.update(dt)
   joystickUpdateAllPlayers(players)
-  updateBoard(dt)
-  updateAllPlayers(players, dt)
-  updateFlags(players, flag1, flag2, board, boardData)
+  updateBoard(dt, level)
+  updateAllPlayers(players, dt, level)
+  updateFlags(players, flag1, flag2, level)
   updateTimer(dt)
   updateScoreBar(dt)
   if isGameOver() then
@@ -43,22 +44,22 @@ function game.update(dt)
 end
 
 function game.joystickpressed(j, b)
-  joystickpressedAllPlayers(players, j, b)
+  joystickpressedAllPlayers(players, j, b, level)
   return game
 end
 
 function game.draw()
-  drawBoard(board)
+  drawBoard(level)
   drawAllPlayers(players)
-  drawFlag(flag1, boardData)
-  drawFlag(flag2, boardData)
+  drawFlag(flag1, level)
+  drawFlag(flag2, level)
   drawTimer()
   drawScore()
   return game
 end
 
 function game.keypressed(key, scancode, isrepeat)
-  keypressAllPlayers(players, key)
+  keypressAllPlayers(players, key, level)
   return game
 end
 

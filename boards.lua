@@ -3,7 +3,11 @@ colours = {{61, 82, 213}, {39, 251, 107}} -- blue and green colours for now
 local baseImage1 = love.graphics.newImage("art/base1.png")
 local baseImage2 = love.graphics.newImage("art/base2.png")
 
-function generateRandomBoard(board, startX, startY, width, height, squareSize)
+function generateRandomBoard(startX, startY, width, height, squareSize)
+  local board = {}
+  local boardData = {startX = startX, startY = startY,
+                     width = width, height = height, squareSize = squareSize}
+  local level = {board = board, boardData = boardData}
   local x = startX
   for i = 1,width do
     local y = startY
@@ -12,31 +16,44 @@ function generateRandomBoard(board, startX, startY, width, height, squareSize)
       local colourIndex = math.random(2)
       board[i][j] = {x = x, y = y, colourIndex = colourIndex, squareSize = squareSize, shrink = false, grow = false}
       y = y + squareSize
-      if i <= 3 and j <= 3 then
-        board[i][j].teamBase = 1
-      elseif i > width - 3 and j > height - 3 then
-        board[i][j].teamBase = 2
-      end
     end
     x = x + squareSize
   end
 
-  board.base1X, board.base1Y = startX, startY
-  board.base2X, board.base2Y = startX + (width - 3) * squareSize, startY + (height - 3) * squareSize
+  moveBases(1, 1, width - 2, height - 2, level)
 
-  return board
-
+  return level
 end
 
-function drawBoard(board)
+function moveBases(bx1, by1, bx2, by2, level)
+  local boardData = level.boardData
+  boardData.base1BX, boardData.base1BY = bx1, by1
+  boardData.base2BX, boardData.base2BY = bx2, by2
+  boardData.base1X, boardData.base1Y = getSquarePos(bx1, by1, level)
+  boardData.base2X, boardData.base2Y = getSquarePos(bx2, by2, level)
+  for i, row in pairs(level.board) do
+    for j, square in pairs(row) do
+      if i - bx1 >= 0 and i - bx1 <= 2 and j - by1 >= 0 and j - by1 <= 2 then
+        square.teamBase = 1
+      elseif i - bx2 >= 0 and i - bx2 <= 2 and j - by2 >= 0 and j - by2 <= 2 then
+        square.teamBase = 2
+      else
+        square.teamBase = nil
+      end
+    end
+  end
+end
+
+function drawBoard(level)
+  local board, boardData = level.board, level.boardData
   for _,col in ipairs(board) do
     for _,square in ipairs(col) do
       drawSquare(square)
     end
   end
   love.graphics.setColor(255, 255, 255)
-  love.graphics.draw(baseImage1, board.base1X, board.base1Y, 0, 3 * boardData.squareSize / baseImage1:getWidth(), 3 * boardData.squareSize / baseImage1:getHeight())
-  love.graphics.draw(baseImage2, board.base2X, board.base2Y, 0, 3 * boardData.squareSize / baseImage2:getWidth(), 3 * boardData.squareSize / baseImage2:getHeight())
+  love.graphics.draw(baseImage1, boardData.base1X, boardData.base1Y, 0, 3 * boardData.squareSize / baseImage1:getWidth(), 3 * boardData.squareSize / baseImage1:getHeight())
+  love.graphics.draw(baseImage2, boardData.base2X, boardData.base2Y, 0, 3 * boardData.squareSize / baseImage2:getWidth(), 3 * boardData.squareSize / baseImage2:getHeight())
 end
 
 function drawSquare(square)
@@ -50,7 +67,8 @@ function drawSquare(square)
   end
 end
 
-function updateBoard(dt)
+function updateBoard(dt, level)
+  local board, boardData = level.board, level.boardData
   for x=1, boardData.width do
     for y=1, boardData.height do
       if board[x][y].shrink then
@@ -68,17 +86,18 @@ function updateBoard(dt)
   end
 end
 
-function flipBoard(mode, board, bx, by)
+function flipBoard(mode, bx, by, level)
+  local board, boardData = level.board, level.boardData
   if mode == "column" then
     for i = 1,boardData.height do
       if by ~= i then
-        flipSquare(board[bx][i], boardData)
+        flipSquare(board[bx][i], level)
       end
     end
   elseif mode == "row" then
     for j = 1,boardData.width do
       if bx ~= j then
-        flipSquare(board[j][by], boardData)
+        flipSquare(board[j][by], level)
       end
     end
   elseif mode == "area" then
@@ -86,29 +105,35 @@ function flipBoard(mode, board, bx, by)
       for j = 1,boardData.height do
         distance = math.abs(i - bx) + math.abs(j - by)
         if distance ~= 0 and distance <= 2 then
-          flipSquare(board[i][j], boardData)
+          flipSquare(board[i][j], level)
         end
       end
     end
   end
 end
 
-function flipSquare(square, boardData)
+function flipSquare(square, level)
   if square.shrink then
     square.colourIndex = 3 - square.colourIndex
   end
-  square.shrink = createTweens({{0,boardData.squareSize/2,0.1}})
+  square.shrink = createTweens({{0,level.boardData.squareSize/2,0.1}})
 end
 
-function getBXAndBY(boardData, x, y)
+function getSquarePos(bx, by, level)
+  local x = level.boardData.startX + level.boardData.squareSize * (bx - 1)
+  local y = level.boardData.startY + level.boardData.squareSize * (by - 1)
+  return x, y
+end
+
+function getBXAndBY(x, y, level)
+  local boardData = level.boardData
   local bx = math.floor((x - boardData.startX) / boardData.squareSize) + 1
   local by = math.floor((y - boardData.startY) / boardData.squareSize) + 1
   return bx, by
 end
 
-function onBoard(boardData, x, y, otherx, othery)
-  if not otherx then local otherx = x end
-  if not othery then local othery = y end
+function onBoard(x, y, otherx, othery, level)
+  local boardData = level.boardData
   local onBoard = x >= boardData.startX
               and y >= boardData.startY
               and otherx < boardData.startX + boardData.width * boardData.squareSize
