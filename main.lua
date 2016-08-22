@@ -1,4 +1,4 @@
-requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "timer", "score", "gameover", "team-select"}
+requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "timer", "score", "gameover", "team-select", "level-creator"}
 
 for _,j in pairs(requires) do
   require(j)
@@ -65,6 +65,12 @@ end
 function love.mousemoved(x, y, dx, dy, istouch)
   if gamestate.mousemoved then
     gamestate = gamestate.mousemoved(x, y, dx, dy, istouch)
+  end
+end
+
+function love.mousereleased(x, y, button, istouch)
+  if gamestate.mousereleased then
+    gamestate = gamestate.mousereleased(x, y, button, istouch)
   end
 end
 
