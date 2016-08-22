@@ -1,4 +1,4 @@
-requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "timer", "score", "gameover", "team-select", "level-creator"}
+requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "timer", "score", "gameover", "team-select", "level-creator", "useful"}
 
 for _,j in pairs(requires) do
   require(j)
