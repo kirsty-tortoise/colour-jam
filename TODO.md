@@ -38,3 +38,13 @@
  - [ ] AIs so you can play by yourself
  - [ ] Possibility to play over the Internet if there aren't lots of people at your house
  - [ ] Haptic feedback!
+
+### Level creation
+ - [x] Make mousedragged stuff work nicely
+ - [ ] Change colouring mode between flip, blue and green
+ - [ ] Add function for converting table to string and saving
+ - [ ] Allow saving and retrieving board
+ - [ ] Make some default board, and save them so everyone gets them
+ - [ ] Make a level choosing screen
+ - [ ] Allow moving bases
+ - [ ] Allow changing numbers of squares

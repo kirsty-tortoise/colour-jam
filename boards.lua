@@ -68,3 +68,17 @@ function flipBoard(mode, board, bx, by)
     end
   end
 end
+
+function getBXAndBY(boardData, x, y)
+  local bx = math.floor((x - boardData.startX) / boardData.squareSize) + 1
+  local by = math.floor((y - boardData.startY) / boardData.squareSize) + 1
+  return bx, by
+end
+
+function onBoard(boardData, x, y)
+  local onBoard = x >= boardData.startX
+                  and y >= boardData.startY
+                  and x < boardData.startX + boardData.width * boardData.squareSize
+                  and y < boardData.startY + boardData.height * boardData.squareSize
+  return onBoard
+end

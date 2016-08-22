@@ -192,12 +192,6 @@ function joystickUpdateAllPlayers(players)
   end
 end
 
-function getBXAndBY(boardData, x, y)
-  local bx = math.floor((x - boardData.startX) / boardData.squareSize) + 1
-  local by = math.floor((y - boardData.startY) / boardData.squareSize) + 1
-  return bx, by
-end
-
 function getMidPosition(player, x, y)
   return x + player.width / 2, y + player.height / 2
 end
@@ -219,19 +213,15 @@ end
 
 function movePlayerIfCan(player, newX, newY, board, boardData)
   local otherX, otherY = getOtherSide(player, newX, newY)
-  local onBoard = newX >= boardData.startX
-                  and newY >= boardData.startY
-                  and otherX < boardData.startX + boardData.width * boardData.squareSize
-                  and otherY < boardData.startY + boardData.height * boardData.squareSize
-
   local bx1,by1 = getBXAndBY(boardData, newX, newY)
   local bx2,by2 = getBXAndBY(boardData, otherX, otherY)
   local bx, by = getBXAndBY(boardData, getMidPosition(player, newX, newY))
 
-  if onBoard and checkPosition(player, board, bx1, by1)
-             and checkPosition(player, board, bx1, by2)
-             and checkPosition(player, board, bx2, by1)
-             and checkPosition(player, board, bx2, by2) then
+  if onBoard(boardData, newX, newY)
+     and checkPosition(player, board, bx1, by1)
+     and checkPosition(player, board, bx1, by2)
+     and checkPosition(player, board, bx2, by1)
+     and checkPosition(player, board, bx2, by2) then
     player.x, player.y, player.bx, player.by = newX, newY, bx, by
   end
 end

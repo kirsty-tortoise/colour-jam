@@ -68,6 +68,12 @@ function love.mousemoved(x, y, dx, dy, istouch)
   end
 end
 
+function love.mousereleased(x, y, button, istouch)
+  if gamestate.mousereleased then
+    gamestate = gamestate.mousereleased(x, y, button, istouch)
+  end
+end
+
 function love.keypressed( key, scancode, isrepeat )
   if gamestate.keypressed then
     gamestate = gamestate.keypressed(key, scancode, isrepeat)
