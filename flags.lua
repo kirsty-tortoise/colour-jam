@@ -47,6 +47,9 @@ end
 function dropFlag(flag, bx, by)
   moveFlagTo(flag, boardData, bx, by)
   flag.isDown = true
+  if flag.playerHolding then
+    flag.playerHolding.flagHolding = nil
+  end
   flag.playerHolding = nil
 end
 
@@ -57,7 +60,7 @@ function updateFlag(flag, board, boardData)
     if isFlagBack(flag, board) then
       love.audio.play(applause)
       scores[3 - flag.team] = scores[3 - flag.team] + 1
-      moveFlagTo(flag, boardData, flag.initialBX, flag.initialBY)
+      dropFlag(flag, flag.initialBX, flag.initialBY)
       flag.isDown = true
       flag.playerHolding = nil
     end

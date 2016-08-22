@@ -7,6 +7,12 @@ local menuButton = {x = 550, y = 300, width = 200, height = 200, text = "Back to
 function gameover.setup()
   moveScoreBarToTop()
   love.audio.play(applause)
+
+  -- set colours back to white
+  sameTeamsButton.colour = {255, 255, 255}
+  samePlayersButton.colour = {255, 255, 255}
+  menuButton.colour = {255, 255, 255}
+
   return gameover
 end
 

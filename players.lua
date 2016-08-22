@@ -68,7 +68,6 @@ function updatePlayer(player, dt)
   if not checkPosition(player, board, player.bx, player.by) then
     if player.flagHolding then
       dropFlag(player.flagHolding, player.bx, player.by)
-      player.flagHolding = nil
     end
     movePlayerTo(player, boardData, player.initialBX, player.initialBY)
   elseif not canPlayerMove(player, board, boardData) then
