@@ -35,6 +35,11 @@
  - [x] Edit README so people could actually set it up and run it
  - [ ] Haptic feedback! Maybe when controllers need to press at the start.
  - [ ] Make the game resizable
+ - [ ] Player names
+ - [ ] Third colour square nobody can use
+ - [ ] Keep score over several games and make league table
+ - [ ] Option of team colours which aren't blue and green
+ - [ ] Back buttons in set up screens
 
 ### Extra crazy stuff for if we somehow have lots of time
  - [ ] AIs so you can play by yourself
