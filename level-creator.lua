@@ -17,6 +17,8 @@ local mousedown
 local defaultShown
 local selectedModeButton
 local hoveringResetButton
+local baseMoving -- set to nil, 1 or 2, depending which board is being moved
+local totalDx, totalDy
 
 local creatingDefaults = true -- Set this to true if you are messing with default levels
 
@@ -35,6 +37,7 @@ function levelCreator.setup()
   mode = "flip"
   selectedModeButton = controls.flipMode
   lastX, lastY = 0, 0
+  baseMoving, totalDx, totalDy = nil, 0, 0
   return levelCreator
 end
 
@@ -52,14 +55,21 @@ function levelCreator.mousepressed(x, y, button, istouch)
       colourSquare(newLevel.board[bx][by], mode)
       lastX, lastY = bx, by
     end
+    if isOverBase1(x, y, newLevel) then
+      baseMoving = 1
+    elseif isOverBase2(x, y, newLevel) then
+      baseMoving = 2
+    end
+    checkControlsMousepress(x, y)
   end
-  return checkControlsMousepress(x, y)
+  return levelCreator
 end
 
 function levelCreator.mousereleased(x, y, button, istouch)
   if button == 1 then
     lastX, lastY = 0, 0
     mousedown = false
+    baseMoving, totalDx, totalDy = nil, 0, 0
   end
   return levelCreator
 end
@@ -81,11 +91,39 @@ end
 
 function levelCreator.mousemoved(x, y, dx, dy, istouch)
   if mousedown then
-    if onBoard(x, y, x, y, newLevel) then
+    if not baseMoving and onBoard(x, y, x, y, newLevel) then
       local bx, by = getBXAndBY(x, y, newLevel)
       if not (lastX == bx and lastY == by) then
         colourSquare(newLevel.board[bx][by], mode)
         lastX, lastY = bx, by
+      end
+    end
+    if baseMoving then
+      totalDx = totalDx + dx
+      totalDy = totalDy + dy
+      local changeX, changeY = 0, 0
+      if totalDx >= newLevel.boardData.squareSize then
+        changeX = 1
+        totalDx = totalDx - newLevel.boardData.squareSize
+      elseif totalDx <= -newLevel.boardData.squareSize then
+        changeX = -1
+        totalDx = totalDx + newLevel.boardData.squareSize
+      end
+      if totalDy >= newLevel.boardData.squareSize then
+        changeY = 1
+        totalDy = totalDy - newLevel.boardData.squareSize
+      elseif totalDy <= -newLevel.boardData.squareSize then
+        changeY = -1
+        totalDy = totalDy + newLevel.boardData.squareSize
+      end
+      if changeX ~= 0 or changeY ~= 0 then
+        if baseMoving == 1 then
+          moveBases(newLevel.boardData.base1BX + changeX, newLevel.boardData.base1BY + changeY,
+                    newLevel.boardData.base2BX, newLevel.boardData.base2BY, newLevel)
+        else
+          moveBases(newLevel.boardData.base1BX, newLevel.boardData.base1BY,
+                    newLevel.boardData.base2BX + changeX, newLevel.boardData.base2BY + changeY, newLevel)
+        end
       end
     end
   end
@@ -210,4 +248,18 @@ function resetBoard(resetMode, level)
       end
     end
   end
+end
+
+function isOverBase1(x, y, level)
+  return x > level.boardData.base1X
+     and y > level.boardData.base1Y
+     and x < level.boardData.base1X + level.boardData.squareSize * 3
+     and y < level.boardData.base1Y + level.boardData.squareSize * 3
+end
+
+function isOverBase2(x, y, level)
+  return x > level.boardData.base2X
+     and y > level.boardData.base2Y
+     and x < level.boardData.base2X + level.boardData.squareSize * 3
+     and y < level.boardData.base2Y + level.boardData.squareSize * 3
 end

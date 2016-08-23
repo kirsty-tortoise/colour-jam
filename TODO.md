@@ -59,5 +59,5 @@
  - [ ] Get boards to be named
  - [ ] Make some default levels, and save them so everyone gets them
  - [ ] Make a level choosing screen
- - [ ] Allow moving bases
+ - [x] Allow moving bases
  - [ ] Allow changing numbers of squares
