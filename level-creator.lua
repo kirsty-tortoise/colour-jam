@@ -1,14 +1,14 @@
 levelCreator = {code = "level-creator"}
 
 local controls = {save = {x = 675, y = 515, width = 100, height = 70, text = "SAVE", colour = {255, 255, 255}},
-                  colourMode = {x = 15, y = 515, width = 200, height = 70},
-                  blueMode = {x = 38.75, y = 540, width = 35, height = 35},
-                  greenMode = {x = 97.5, y = 540, width = 35, height = 35},
-                  flipMode = {x = 156.25, y = 540, width = 35, height = 35},
-                  resetLevel = {x = 230, y = 540, width = 200, height = 70},
-                  greenReset = {},
-                  blueReset = {},
-                  randomReset = {}}
+                  colourMode = {x = 115, y = 515, width = 200, height = 70},
+                  blueMode = {x = 138.75, y = 540, width = 35, height = 35},
+                  greenMode = {x = 197.5, y = 540, width = 35, height = 35},
+                  flipMode = {x = 256.25, y = 540, width = 35, height = 35},
+                  resetLevel = {x = 415, y = 515, width = 200, height = 70},
+                  greenReset = {x = 497.5, y = 540, width = 35, height = 35},
+                  blueReset = {x = 438.75, y = 540, width = 35, height = 35},
+                  randomReset = {x = 556.25, y = 540, width = 35, height = 35}}
 
 local newLevel
 local mode = "flip"
@@ -16,6 +16,7 @@ local lastX, lastY = 0, 0
 local mousedown
 local defaultShown
 local selectedModeButton
+local hoveringResetButton
 
 local creatingDefaults = true -- Set this to true if you are messing with default levels
 
@@ -110,38 +111,47 @@ function isOverSquare(square, x, y)
 end
 
 function drawControls()
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.rectangle("line", controls.colourMode.x, controls.colourMode.y,
-                          controls.colourMode.width, controls.colourMode.height)
-  love.graphics.setFont(smallFont)
-  love.graphics.printf("Change colour mode", 15, 520, 200, "center")
-
-  love.graphics.setColor(colours[1])
-  love.graphics.rectangle("fill", controls.blueMode.x, controls.blueMode.y,
-                                  controls.blueMode.width, controls.blueMode.height)
-  love.graphics.setColor(colours[2])
-  love.graphics.rectangle("fill", controls.greenMode.x, controls.greenMode.y,
-                                  controls.greenMode.width, controls.greenMode.height)
-
-  -- draw flipmode half blue half green
-  love.graphics.setColor(colours[1])
-  love.graphics.polygon('fill', controls.flipMode.x, controls.flipMode.y,
-                                controls.flipMode.x, controls.flipMode.y + controls.flipMode.height,
-                                controls.flipMode.x + controls.flipMode.width, controls.flipMode.y)
-  love.graphics.setColor(colours[2])
-  love.graphics.polygon('fill', controls.flipMode.x + controls.flipMode.width, controls.flipMode.y + controls.flipMode.height,
-                                controls.flipMode.x, controls.flipMode.y + controls.flipMode.height,
-                                controls.flipMode.x + controls.flipMode.width, controls.flipMode.y)
+  drawControlSet(controls.blueMode, controls.greenMode, controls.flipMode, controls.colourMode, "Change colour mode")
+  drawControlSet(controls.blueReset, controls.greenReset, controls.randomReset, controls.resetLevel, "Reset the grid")
 
   -- draw white square around chosen mode
   love.graphics.setColor(255, 255, 255)
   love.graphics.setLineWidth(2)
   love.graphics.rectangle("line", selectedModeButton.x, selectedModeButton.y,
                                   selectedModeButton.width, selectedModeButton.height)
+  if hoveringResetButton then
+    love.graphics.rectangle("line", hoveringResetButton.x, hoveringResetButton.y,
+                                    hoveringResetButton.width, hoveringResetButton.height)
+  end
 
   love.graphics.setLineWidth(1)
 
   drawButton(controls.save)
+end
+
+function drawControlSet(blueButton, greenButton, bothButton, modeSquare, modeText)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.rectangle("line", modeSquare.x, modeSquare.y,
+                                  modeSquare.width, modeSquare.height)
+  love.graphics.setFont(smallFont)
+  love.graphics.printf(modeText, modeSquare.x, modeSquare.y + 5, modeSquare.width, "center")
+
+  love.graphics.setColor(colours[1])
+  love.graphics.rectangle("fill", blueButton.x, blueButton.y,
+                                  blueButton.width, blueButton.height)
+  love.graphics.setColor(colours[2])
+  love.graphics.rectangle("fill", greenButton.x, greenButton.y,
+                                  greenButton.width, greenButton.height)
+
+  -- draw flipmode half blue half green
+  love.graphics.setColor(colours[1])
+  love.graphics.polygon('fill', bothButton.x, bothButton.y,
+                                bothButton.x, bothButton.y + bothButton.height,
+                                bothButton.x + bothButton.width, bothButton.y)
+  love.graphics.setColor(colours[2])
+  love.graphics.polygon('fill', bothButton.x + bothButton.width, bothButton.y + bothButton.height,
+                                bothButton.x, bothButton.y + bothButton.height,
+                                bothButton.x + bothButton.width, bothButton.y)
 end
 
 function checkControlsMousepress(x, y)
@@ -160,6 +170,12 @@ function checkControlsMousepress(x, y)
   elseif isOverButton(controls.flipMode, x, y) then
     mode = "flip"
     selectedModeButton = controls.flipMode
+  elseif isOverButton(controls.blueReset, x, y) then
+    resetBoard("blue", newLevel)
+  elseif isOverButton(controls.greenReset, x, y) then
+    resetBoard("green", newLevel)
+  elseif isOverButton(controls.randomReset, x, y) then
+    resetBoard("random", newLevel)
   end
   return levelCreator
 end
@@ -171,6 +187,26 @@ function checkControlsMousemoved(x, y)
         j.colour = {255, 0, 0}
       else
         j.colour = {255, 255, 255}
+      end
+    end
+  end
+  hoveringResetButton = nil
+  for _,j in pairs({controls.blueReset, controls.greenReset, controls.randomReset}) do
+    if isOverButton(j, x, y) then
+      hoveringResetButton = j
+    end
+  end
+end
+
+function resetBoard(resetMode, level)
+  for _,row in pairs(level.board) do
+    for _,square in pairs(row) do
+      if resetMode == "blue" then
+        square.colourIndex = 1
+      elseif resetMode == "green" then
+        square.colourIndex = 2
+      else
+        square.colourIndex = math.random(2)
       end
     end
   end
