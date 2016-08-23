@@ -6,8 +6,8 @@ local controls = {save = {x = 675, y = 515, width = 100, height = 70, text = "SA
                   greenMode = {x = 197.5, y = 540, width = 35, height = 35},
                   flipMode = {x = 256.25, y = 540, width = 35, height = 35},
                   resetLevel = {x = 415, y = 515, width = 200, height = 70},
-                  greenReset = {x = 497.5, y = 540, width = 35, height = 35},
                   blueReset = {x = 438.75, y = 540, width = 35, height = 35},
+                  greenReset = {x = 497.5, y = 540, width = 35, height = 35},
                   randomReset = {x = 556.25, y = 540, width = 35, height = 35}}
 
 local newLevel
@@ -50,15 +50,14 @@ end
 function levelCreator.mousepressed(x, y, button, istouch)
   if button == 1 then
     mousedown = true
-    if onBoard(x, y, x, y, newLevel) then
-      local bx, by = getBXAndBY(x, y, newLevel)
-      colourSquare(newLevel.board[bx][by], mode)
-      lastX, lastY = bx, by
-    end
     if isOverBase1(x, y, newLevel) then
       baseMoving = 1
     elseif isOverBase2(x, y, newLevel) then
       baseMoving = 2
+    elseif onBoard(x, y, x, y, newLevel) then
+      local bx, by = getBXAndBY(x, y, newLevel)
+      colourSquare(newLevel.board[bx][by], mode)
+      lastX, lastY = bx, by
     end
     checkControlsMousepress(x, y)
   end
@@ -118,10 +117,10 @@ function levelCreator.mousemoved(x, y, dx, dy, istouch)
       end
       if changeX ~= 0 or changeY ~= 0 then
         if baseMoving == 1 then
-          moveBases(newLevel.boardData.base1BX + changeX, newLevel.boardData.base1BY + changeY,
+          moveBaseIfCan(newLevel.boardData.base1BX + changeX, newLevel.boardData.base1BY + changeY,
                     newLevel.boardData.base2BX, newLevel.boardData.base2BY, newLevel)
         else
-          moveBases(newLevel.boardData.base1BX, newLevel.boardData.base1BY,
+          moveBaseIfCan(newLevel.boardData.base1BX, newLevel.boardData.base1BY,
                     newLevel.boardData.base2BX + changeX, newLevel.boardData.base2BY + changeY, newLevel)
         end
       end

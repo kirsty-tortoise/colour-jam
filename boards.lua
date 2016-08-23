@@ -20,13 +20,24 @@ function generateRandomBoard(startX, startY, width, height, squareSize)
     x = x + squareSize
   end
 
-  moveBases(1, 1, width - 2, height - 2, level)
+  moveBaseIfCan(1, 1, width - 2, height - 2, level)
 
   return level
 end
 
-function moveBases(bx1, by1, bx2, by2, level)
+function moveBaseIfCan(bx1, by1, bx2, by2, level)
   local boardData = level.boardData
+
+  -- check if inside board
+  if bx1 < 1 then bx1 = 1 end
+  if bx1 > boardData.width - 2 then bx1 = boardData.width - 2 end
+  if bx2 < 1 then bx2 = 1 end
+  if bx2 > boardData.width - 2 then bx2 = boardData.width - 2 end
+  if by1 < 1 then by1 = 1 end
+  if by1 > boardData.height - 2 then by1 = boardData.height - 2 end
+  if by2 < 1 then by2 = 1 end
+  if by2 > boardData.height - 2 then by2 = boardData.height - 2 end
+
   boardData.base1BX, boardData.base1BY = bx1, by1
   boardData.base2BX, boardData.base2BY = bx2, by2
   boardData.base1X, boardData.base1Y = getSquarePos(bx1, by1, level)
