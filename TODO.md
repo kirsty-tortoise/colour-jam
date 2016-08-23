@@ -52,9 +52,12 @@
 ### Level creation
  - [x] Make mousedragged stuff work nicely
  - [ ] Change colouring mode between flip, blue and green
- - [ ] Add function for converting table to string and saving
- - [ ] Allow saving and retrieving board
- - [ ] Make some default board, and save them so everyone gets them
+ - [ ] Add controls to set the board to green, blue or random
+ - [ ] Undo would be a nice thing
+ - [x] Add function for converting table to string and saving
+ - [x] Allow saving and retrieving board
+ - [ ] Get boards to be named
+ - [ ] Make some default levels, and save them so everyone gets them
  - [ ] Make a level choosing screen
  - [ ] Allow moving bases
  - [ ] Allow changing numbers of squares

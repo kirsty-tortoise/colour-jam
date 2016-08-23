@@ -28,11 +28,25 @@ gobutton = love.graphics.newImage("art/go.png")
 
 local flickFlags = {}
 
+-- load default levels if available
+if love.filesystem.exists("defaultLevels.lua") then
+  defaultLevels = love.filesystem.load("defaultLevels.lua")()
+else
+  defaultLevels = {}
+end
+
+-- load their levels if available
+if love.filesystem.exists("yourLevels.lua") then
+  yourLevels = love.filesystem.load("yourLevels.lua")
+else
+  yourLevels = {}
+end
+
 function love.load()
+  math.randomseed(os.time())
   gamestate = title
   lastGamestate = gamestate.code
   if gamestate.setup then gamestate.setup() end
-  math.randomseed(os.time())
   print(love.joystick.getJoystickCount())
 end
 

@@ -1,8 +1,6 @@
 game = {code="game"}
 
 local level
--- board = {}
--- boardData = {startX = 0, startY = 0, width = 16, height = 10, squareSize = 50}
 scores = {0, 0}
 local flag1, flag2
 local loopflag = true
