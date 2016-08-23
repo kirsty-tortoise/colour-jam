@@ -1,12 +1,21 @@
 levelCreator = {code = "level-creator"}
 
-local controls = {save = {x = 675, y = 515, width = 100, height = 70, text = "SAVE", colour = {255, 255, 255}}}
+local controls = {save = {x = 675, y = 515, width = 100, height = 70, text = "SAVE", colour = {255, 255, 255}},
+                  colourMode = {x = 15, y = 515, width = 200, height = 70},
+                  blueMode = {x = 38.75, y = 540, width = 35, height = 35},
+                  greenMode = {x = 97.5, y = 540, width = 35, height = 35},
+                  flipMode = {x = 156.25, y = 540, width = 35, height = 35},
+                  resetLevel = {x = 230, y = 540, width = 200, height = 70},
+                  greenReset = {},
+                  blueReset = {},
+                  randomReset = {}}
 
 local newLevel
 local mode = "flip"
 local lastX, lastY = 0, 0
 local mousedown
 local defaultShown
+local selectedModeButton
 
 local creatingDefaults = true -- Set this to true if you are messing with default levels
 
@@ -23,6 +32,7 @@ function levelCreator.setup()
 
   mousedown = false
   mode = "flip"
+  selectedModeButton = controls.flipMode
   lastX, lastY = 0, 0
   return levelCreator
 end
@@ -101,9 +111,36 @@ end
 
 function drawControls()
   love.graphics.setColor(255, 255, 255)
-  love.graphics.rectangle("line", 15, 515, 200, 70)
+  love.graphics.rectangle("line", controls.colourMode.x, controls.colourMode.y,
+                          controls.colourMode.width, controls.colourMode.height)
   love.graphics.setFont(smallFont)
-  love.graphics.printf("Change colour mode", 15, 525, 200, "center")
+  love.graphics.printf("Change colour mode", 15, 520, 200, "center")
+
+  love.graphics.setColor(colours[1])
+  love.graphics.rectangle("fill", controls.blueMode.x, controls.blueMode.y,
+                                  controls.blueMode.width, controls.blueMode.height)
+  love.graphics.setColor(colours[2])
+  love.graphics.rectangle("fill", controls.greenMode.x, controls.greenMode.y,
+                                  controls.greenMode.width, controls.greenMode.height)
+
+  -- draw flipmode half blue half green
+  love.graphics.setColor(colours[1])
+  love.graphics.polygon('fill', controls.flipMode.x, controls.flipMode.y,
+                                controls.flipMode.x, controls.flipMode.y + controls.flipMode.height,
+                                controls.flipMode.x + controls.flipMode.width, controls.flipMode.y)
+  love.graphics.setColor(colours[2])
+  love.graphics.polygon('fill', controls.flipMode.x + controls.flipMode.width, controls.flipMode.y + controls.flipMode.height,
+                                controls.flipMode.x, controls.flipMode.y + controls.flipMode.height,
+                                controls.flipMode.x + controls.flipMode.width, controls.flipMode.y)
+
+  -- draw white square around chosen mode
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setLineWidth(2)
+  love.graphics.rectangle("line", selectedModeButton.x, selectedModeButton.y,
+                                  selectedModeButton.width, selectedModeButton.height)
+
+  love.graphics.setLineWidth(1)
+
   drawButton(controls.save)
 end
 
@@ -114,6 +151,15 @@ function checkControlsMousepress(x, y)
     else
       love.filesystem.write("yourLevels.lua", "return " .. tableToLua(yourLevels))
     end
+  elseif isOverButton(controls.blueMode, x, y) then
+    mode = "blue"
+    selectedModeButton = controls.blueMode
+  elseif isOverButton(controls.greenMode, x, y) then
+    mode = "green"
+    selectedModeButton = controls.greenMode
+  elseif isOverButton(controls.flipMode, x, y) then
+    mode = "flip"
+    selectedModeButton = controls.flipMode
   end
   return levelCreator
 end

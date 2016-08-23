@@ -51,7 +51,7 @@
 
 ### Level creation
  - [x] Make mousedragged stuff work nicely
- - [ ] Change colouring mode between flip, blue and green
+ - [x] Change colouring mode between flip, blue and green
  - [ ] Add controls to set the board to green, blue or random
  - [ ] Undo would be a nice thing
  - [x] Add function for converting table to string and saving
