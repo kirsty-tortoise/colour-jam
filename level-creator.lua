@@ -21,7 +21,7 @@ local baseMoving -- set to nil, 1 or 2, depending which board is being moved
 local totalDx, totalDy
 local saving
 
-local creatingDefaults = true -- Set this to true if you are messing with default levels
+local creatingDefaults = false -- Set this to true if you are messing with default levels
 
 function levelCreator.setup()
   if creatingDefaults then
@@ -99,6 +99,7 @@ function levelCreator.keypressed(key, scancode, isrepeat)
           love.filesystem.write("yourLevels.lua", "return " .. tableToLua(yourLevels))
         end
         saving = false
+        return game
       end
     elseif key == "backspace" then
       local byteoffset = utf8.offset(newLevel.name, -1)

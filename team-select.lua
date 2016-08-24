@@ -97,7 +97,7 @@ end
 
 function teamSelect.keypressed(k, sc, ir)
   if k == "return" and playersOnTeam(0) == 0 then
-    return game
+    return levelSelect
   else
     for i=1, #players do
       if players[i].keys then
@@ -137,7 +137,7 @@ end
 function teamSelect.mousepressed(x, y, b, istouch)
   if b == 1 and (debug or playersOnTeam(0) == 0) then
     if x > 365 and x < 448 and y > 510 and y < 573 then
-      return game
+      return levelSelect
     end
   end
   return teamSelect

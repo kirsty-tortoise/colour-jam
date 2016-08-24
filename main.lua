@@ -1,4 +1,4 @@
-requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "timer", "score", "gameover", "team-select", "level-creator", "useful"}
+requires = {"title", "game", "boards", "game-setup", "players", "tween", "flags", "timer", "score", "gameover", "team-select", "level-creator", "useful", "level-select"}
 
 for _,j in pairs(requires) do
   require(j)
@@ -39,7 +39,7 @@ end
 
 -- load their levels if available
 if love.filesystem.exists("yourLevels.lua") then
-  yourLevels = love.filesystem.load("yourLevels.lua")
+  yourLevels = love.filesystem.load("yourLevels.lua")()
 else
   yourLevels = {}
 end
