@@ -8,7 +8,21 @@ local loopflag = true
 function game.setup()
   love.audio.play(bg)
   loopflag = true
-  level = generateRandomBoard(0, 0, 16, 10, 50)
+  if levelSelected == "random" then
+    level = generateRandomBoard(0, 0, 16, 10, 50)
+  else
+    local n = string.match(levelSelected, "default(%d+)")
+    if n then
+      level = copy(defaultLevels[tonumber(n)])
+    else
+      n = string.match(levelSelected, "your%-level(%d+)")
+      if n then
+        level = copy(yourLevels[tonumber(n)])
+      else
+        error("Something wrong with levelSelected! " .. levelSelected)
+      end
+    end
+  end
   playerSetup(players, level)
   flag1, flag2 = {}, {}
   flagSetup(flag1, flag2, level)

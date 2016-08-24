@@ -57,7 +57,9 @@
  - [x] Add function for converting table to string and saving
  - [x] Allow saving and retrieving board
  - [x] Get boards to be named
- - [ ] Make some default levels, and save them so everyone gets them
- - [ ] Make a level choosing screen
+ - [x] Make some default levels, and save them so everyone gets them
+ - [x] Make a level choosing screen
  - [x] Allow moving bases
  - [ ] Allow changing numbers of squares
+ - [ ] Allow changing colours
+ - [ ] Put screenshots of levels on level selector

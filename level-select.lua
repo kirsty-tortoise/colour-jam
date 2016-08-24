@@ -7,6 +7,9 @@ local totalScreens
 local maxPanels = 4
 
 function levelSelect.setup()
+  levelPanels = {}
+  levelSelected = "random"
+  screenShown = 1
   totalScreens = 1
   local panelNum = 1
   local x, y
