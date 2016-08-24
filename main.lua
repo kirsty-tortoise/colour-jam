@@ -4,6 +4,8 @@ for _,j in pairs(requires) do
   require(j)
 end
 
+utf8 = require("utf8")
+
 local gamestate
 local lastGamestate
 
@@ -97,6 +99,12 @@ end
 function love.keyreleased(key)
   if gamestate.keyreleased then
     gamestate = gamestate.keyreleased(key)
+  end
+end
+
+function love.textinput(t)
+  if gamestate.textinput then
+    gamestate = gamestate.textinput(t)
   end
 end
 

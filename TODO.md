@@ -56,7 +56,7 @@
  - [ ] Undo would be a nice thing
  - [x] Add function for converting table to string and saving
  - [x] Allow saving and retrieving board
- - [ ] Get boards to be named
+ - [x] Get boards to be named
  - [ ] Make some default levels, and save them so everyone gets them
  - [ ] Make a level choosing screen
  - [x] Allow moving bases

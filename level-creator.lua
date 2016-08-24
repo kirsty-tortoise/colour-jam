@@ -19,6 +19,7 @@ local selectedModeButton
 local hoveringResetButton
 local baseMoving -- set to nil, 1 or 2, depending which board is being moved
 local totalDx, totalDy
+local saving
 
 local creatingDefaults = true -- Set this to true if you are messing with default levels
 
@@ -32,6 +33,7 @@ function levelCreator.setup()
   else
     table.insert(yourLevels, newLevel)
   end
+  saving = false
 
   mousedown = false
   mode = "flip"
@@ -44,11 +46,14 @@ end
 function levelCreator.draw()
   drawBoard(newLevel)
   drawControls()
+  if saving then
+    drawSaveScreen()
+  end
   return levelCreator
 end
 
 function levelCreator.mousepressed(x, y, button, istouch)
-  if button == 1 then
+  if button == 1 and not saving then
     mousedown = true
     if isOverBase1(x, y, newLevel) then
       baseMoving = 1
@@ -74,7 +79,7 @@ function levelCreator.mousereleased(x, y, button, istouch)
 end
 
 function levelCreator.keypressed(key, scancode, isrepeat)
-  if creatingDefaults then
+  if creatingDefaults and not saving then
     -- when creating levels, you can flick through them to check all have loaded
     if key == "left" then
       defaultShown = defaultShown - 1
@@ -84,6 +89,23 @@ function levelCreator.keypressed(key, scancode, isrepeat)
       if defaultShown > #defaultLevels then defaultShown = 1 end
     end
     newLevel = defaultLevels[defaultShown]
+  end
+  if saving then
+    if key == "return" then
+      if #newLevel.name > 0 then
+        if creatingDefaults then
+          love.filesystem.write("defaultLevels.lua", "return " .. tableToLua(defaultLevels))
+        else
+          love.filesystem.write("yourLevels.lua", "return " .. tableToLua(yourLevels))
+        end
+        saving = false
+      end
+    elseif key == "backspace" then
+      local byteoffset = utf8.offset(newLevel.name, -1)
+      if byteoffset then
+        newLevel.name = string.sub(newLevel.name, 1, byteoffset - 1)
+      end
+    end
   end
   return levelCreator
 end
@@ -130,6 +152,13 @@ function levelCreator.mousemoved(x, y, dx, dy, istouch)
   return levelCreator
 end
 
+function levelCreator.textinput(t)
+  if saving then
+    newLevel.name = newLevel.name .. t
+  end
+  return levelCreator
+end
+
 function colourSquare(square, mode)
   if mode == "flip" then
     square.colourIndex = 3 - square.colourIndex
@@ -166,6 +195,16 @@ function drawControls()
   drawButton(controls.save)
 end
 
+function drawSaveScreen()
+  love.graphics.setColor(255, 255, 255, 200)
+  love.graphics.rectangle("fill", 275, 175, 250, 150)
+  love.graphics.setColor(0, 0, 0)
+  love.graphics.setFont(mediumFont)
+  love.graphics.printf("Enter the name of this level, then press Enter.", 275, 180, 250, "center")
+  love.graphics.setFont(largeFont)
+  love.graphics.printf(newLevel.name, 275, 230, 250, "center")
+end
+
 function drawControlSet(blueButton, greenButton, bothButton, modeSquare, modeText)
   love.graphics.setColor(255, 255, 255)
   love.graphics.rectangle("line", modeSquare.x, modeSquare.y,
@@ -193,11 +232,8 @@ end
 
 function checkControlsMousepress(x, y)
   if isOverButton(controls.save, x, y) then
-    if creatingDefaults then
-      love.filesystem.write("defaultLevels.lua", "return " .. tableToLua(defaultLevels))
-    else
-      love.filesystem.write("yourLevels.lua", "return " .. tableToLua(yourLevels))
-    end
+    saving = true
+    newLevel.name = ""
   elseif isOverButton(controls.blueMode, x, y) then
     mode = "blue"
     selectedModeButton = controls.blueMode
