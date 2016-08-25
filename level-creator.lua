@@ -96,12 +96,13 @@ function levelCreator.keypressed(key, scancode, isrepeat)
         if creatingDefaults then
           love.filesystem.write("defaultLevels.lua", "return " .. tableToLua(defaultLevels))
           newScreenshot:encode('png', "default-images/".. newLevel.name .. '.png')
+          return levelSelect
         else
           love.filesystem.write("yourLevels.lua", "return " .. tableToLua(yourLevels))
           newScreenshot:encode('png', "level-images/".. newLevel.name .. '.png')
+          return game
         end
         saving = false
-        return game
       end
     elseif key == "backspace" then
       local byteoffset = utf8.offset(newLevel.name, -1)

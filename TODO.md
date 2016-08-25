@@ -63,4 +63,4 @@
  - [ ] Allow changing numbers of squares
  - [ ] Allow changing colours
  - [x] Put screenshots of levels on level selector
- - [ ] Get screenshots for all default levels
+ - [x] Get screenshots for all default levels

@@ -22,7 +22,7 @@ function levelSelect.setup()
   -- Add default levels
   for i,j in ipairs(defaultLevels) do
     x, y = getPanelCoordinates(panelNum)
-    table.insert(levelPanels, {code = "default"..i, name = j.name, x = x, y = y, width = 300, height = 225, screen = totalScreens, colour = {81, 237, 130}, selected = false})
+    table.insert(levelPanels, {code = "default"..i, name = j.name, x = x, y = y, width = 300, height = 225, screen = totalScreens, colour = {102, 153, 255}, selected = false})
     if panelNum == maxPanels then
       totalScreens = totalScreens + 1
       panelNum = 1
