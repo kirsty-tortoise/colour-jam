@@ -44,6 +44,14 @@ else
   yourLevels = {}
 end
 
+-- Check saving directories are created
+if not love.filesystem.exists("level-images") then
+  love.filesystem.createDirectory("level-images")
+end
+if not love.filesystem.exists("default-images") then
+  love.filesystem.createDirectory("default-images")
+end
+
 function love.load()
   math.randomseed(os.time())
   gamestate = title

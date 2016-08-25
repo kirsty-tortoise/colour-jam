@@ -20,6 +20,7 @@ local hoveringResetButton
 local baseMoving -- set to nil, 1 or 2, depending which board is being moved
 local totalDx, totalDy
 local saving
+local newScreenshot
 
 local creatingDefaults = false -- Set this to true if you are messing with default levels
 
@@ -34,7 +35,6 @@ function levelCreator.setup()
     table.insert(yourLevels, newLevel)
   end
   saving = false
-
   mousedown = false
   mode = "flip"
   selectedModeButton = controls.flipMode
@@ -95,8 +95,10 @@ function levelCreator.keypressed(key, scancode, isrepeat)
       if #newLevel.name > 0 then
         if creatingDefaults then
           love.filesystem.write("defaultLevels.lua", "return " .. tableToLua(defaultLevels))
+          newScreenshot:encode('png', "default-images/".. newLevel.name .. '.png')
         else
           love.filesystem.write("yourLevels.lua", "return " .. tableToLua(yourLevels))
+          newScreenshot:encode('png', "level-images/".. newLevel.name .. '.png')
         end
         saving = false
         return game
@@ -233,6 +235,7 @@ end
 
 function checkControlsMousepress(x, y)
   if isOverButton(controls.save, x, y) then
+    newScreenshot = love.graphics.newScreenshot()
     saving = true
     newLevel.name = ""
   elseif isOverButton(controls.blueMode, x, y) then

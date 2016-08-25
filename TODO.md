@@ -28,7 +28,7 @@
 
 ### Slightly crazy stuff if we have a bit more time
  - [ ] Barriers
- - [ ] Level editor
+ - [x] Level editor
  - [ ] Built in grids
  - [x] Animations of flipping and stuff
  - [x] Music and sound effects
@@ -62,4 +62,5 @@
  - [x] Allow moving bases
  - [ ] Allow changing numbers of squares
  - [ ] Allow changing colours
- - [ ] Put screenshots of levels on level selector
+ - [x] Put screenshots of levels on level selector
+ - [ ] Get screenshots for all default levels

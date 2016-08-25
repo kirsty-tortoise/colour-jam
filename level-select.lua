@@ -47,6 +47,18 @@ function levelSelect.setup()
   x, y = getPanelCoordinates(panelNum)
   table.insert(levelPanels, {code = "new-level", name = "Make a new level!", x = x, y = y, width = 300, height = 225, screen = totalScreens,  colour = {59, 232, 255}, selected = false})
 
+  -- load screenshots
+  local screenshots = {}
+  for _, file in ipairs(love.filesystem.getDirectoryItems("level-images")) do
+    screenshots[file] = love.graphics.newImage("level-images/"..file)
+  end
+  for _, file in ipairs(love.filesystem.getDirectoryItems("default-images")) do
+    screenshots[file] = love.graphics.newImage("default-images/"..file)
+  end
+  for _, panel in ipairs(levelPanels) do
+    panel.image = screenshots[panel.name .. ".png"]
+  end
+
   return levelSelect
 end
 
@@ -112,11 +124,21 @@ function getPanelCoordinates(panelNum)
 end
 
 function drawPanel(panel)
-  love.graphics.setColor(panel.colour or {255, 255, 255})
-  love.graphics.rectangle("fill", panel.x, panel.y, panel.width, panel.height)
-  love.graphics.setColor(0, 0, 0)
-  love.graphics.setFont(largeishFont)
-  love.graphics.printf(panel.name or panel.code, panel.x, panel.y + 0.4 * panel.height, panel.width, "center")
+  if not panel.image then
+    love.graphics.setColor(panel.colour or {255, 255, 255})
+    love.graphics.rectangle("fill", panel.x, panel.y, panel.width, panel.height)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.setFont(largeishFont)
+    love.graphics.printf(panel.name or panel.code, panel.x, panel.y + 0.4 * panel.height, panel.width, "center")
+  else
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.draw(panel.image, panel.x, panel.y, 0, panel.width / panel.image:getWidth())
+    love.graphics.setColor(panel.colour or {255, 255, 255})
+    love.graphics.rectangle("fill", panel.x, panel.y + 0.8 * panel.height, panel.width, 0.2 * panel.height)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.setFont(largeishFont)
+    love.graphics.printf(panel.name, panel.x, panel.y + 0.84 * panel.height, panel.width, "center")
+  end
   if panel.selected then
     love.graphics.setLineWidth(5)
     love.graphics.setColor(255, 255, 255)
