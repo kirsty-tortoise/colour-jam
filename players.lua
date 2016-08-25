@@ -235,7 +235,7 @@ function movePlayerIfCan(player, newX, newY, level)
 end
 
 function checkPosition(player, bx, by, level)
-  return level.board[bx][by].teamBase or player.team == level.board[bx][by].colourIndex
+  return level.board[bx][by].teamBase or (player.team == level.board[bx][by].colourIndex and not level.board[bx][by].shrink)
 end
 
 function movePlayerTo(object, bx, by, level)
